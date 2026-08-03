@@ -1,0 +1,18 @@
+# ideas/input — verbatim checkpoints (optional gitignore per project)
+# ideas/input/
+
+# Baserow env — contains secrets, never commit
+.env
+
+# Project MCP config — contains Baserow MCP endpoint token
+.trae/mcp.json
+
+# Decap CMS local proxy credentials (dev-only)
+.htpasswd
+
+# Baserow data volumes
+pgdata/
+media/
+
+# Dependencies
+node_modules/

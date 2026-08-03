@@ -1,0 +1,18 @@
+:80 {
+    # Use Docker DNS explicitly
+    
+    # Assistant API: frontend Nuxt sends to /api/assistant/*
+    # Backend has enterprise URLs at root /assistant/*
+    handle /api/assistant/* {
+        uri replace /api/assistant/ /assistant/
+        reverse_proxy backend:8000
+    }
+
+    # Other backend endpoints
+    @backend {
+        path /api/* /ws/* /static/* /assistant/chat/* /mcp/*
+    }
+    reverse_proxy @backend backend:8000
+
+    reverse_proxy web-frontend:3000
+}

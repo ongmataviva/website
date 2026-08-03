@@ -1,0 +1,21 @@
+{
+  "name": "mataviva",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bash scripts/link-trae.sh",
+    "harness:link": "bash scripts/link-trae.sh",
+    "harness:sync": "bash scripts/link-trae.sh",
+    "harness:codegen": "ybyra-harness codegen",
+    "cms:proxy": "decap-cms-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ybyra/harness": "file:../mine/ybyra-harness",
+    "decap-cms-server": "^3.3.1"
+  }
+}

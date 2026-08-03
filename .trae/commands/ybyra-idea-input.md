@@ -1,0 +1,1 @@
+/Users/altgoncalves/Projects/mine/ybyra-harness/pack/cursor/commands/ybyra-idea-input.md
