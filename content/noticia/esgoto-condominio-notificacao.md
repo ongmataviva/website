@@ -1,5 +1,6 @@
 ---
-titulo: "Esgoto no IgarapÃ© Ãgua Branca: condomÃ­nio Ã© notificado apÃ³s cobranÃ§a da comunidade"
+titulo: "Esgoto no Igarapé Água Branca: condomínio é notificado após cobrança da
+  comunidade!!"
 slug: esgoto-condominio-notificacao
 data: 2026-07-28
 categoria: agua-e-saneamento
@@ -10,12 +11,14 @@ tags:
   - saneamento
   - ipaam
 destaque: true
-resumo: ApÃ³s denÃºncia da comunidade e cobranÃ§a pÃºblica do Mata Viva, o condomÃ­nio responsÃ¡vel pelo despejo de esgoto no IgarapÃ© Ãgua Branca foi notificado. Uma reuniÃ£o deve definir o cronograma de adequaÃ§Ã£o.
+resumo: Após denúncia da comunidade e cobrança pública do Mata Viva, o
+  condomínio responsável pelo despejo de esgoto no Igarapé Água Branca foi
+  notificado. Uma reunião deve definir o cronograma de adequação.
 ---
-O IgarapÃ© Ãgua Branca recebeu, por meses, despejo de esgoto sem tratamento vindo de um condomÃ­nio da regiÃ£o. A denÃºncia foi levada pela comunidade e pela AssociaÃ§Ã£o Mata Viva a uma reuniÃ£o com representantes do empreendimento.
+O Igarapé Água Branca recebeu, por meses, despejo de esgoto sem tratamento vindo de um condomínio da região. A denúncia foi levada pela comunidade e pela Associação Mata Viva a uma reunião com representantes do empreendimento.
 
-ApÃ³s a cobranÃ§a pÃºblica e o registro georreferenciado da ocorrÃªncia, o condomÃ­nio foi notificado pelo Ã³rgÃ£o ambiental competente. A notificaÃ§Ã£o exige a apresentaÃ§Ã£o de um plano de correÃ§Ã£o e o fim do despejo irregular.
+Após a cobrança pública e o registro georreferenciado da ocorrência, o condomínio foi notificado pelo órgão ambiental competente. A notificação exige a apresentação de um plano de correção e o fim do despejo irregular.
 
-> O igarapÃ© Ã© um bem comum. NinguÃ©m tem o direito de transformar o nosso Ãgua Branca em esgoto a cÃ©u aberto.
+> O igarapé é um bem comum. Ninguém tem o direito de transformar o nosso Água Branca em esgoto a céu aberto.
 
-A prÃ³xima reuniÃ£o, que envolve o IPAAM e a Ãguas de Manaus, deve estabelecer prazos e a forma de monitoramento contÃ­nuo do ponto de lanÃ§amento. O Mata Viva seguirÃ¡ acompanhando e publicando os desdobramentos.
+A próxima reunião, que envolve o IPAAM e a Águas de Manaus, deve estabelecer prazos e a forma de monitoramento contínuo do ponto de lançamento. O Mata Viva seguirá acompanhando e publicando os desdobramentos.
