@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import './Badge.css';
 
-export type BadgeVariant = 'neutral' | 'accent' | 'open' | 'progress' | 'resolved';
+export type BadgeVariant = 'neutral' | 'accent';
 
 export interface BadgeProps {
   children: ReactNode;
@@ -9,9 +9,8 @@ export interface BadgeProps {
 }
 
 /**
- * Rótulo de status em formato de pílula. Variantes mapeiam diretamente
- * os tokens de cor da marca (--color-accent-*) e de status
- * (--color-status-*). Usado em listas de notícias e ocorrências.
+ * Rótulo em formato de pílula. As variantes mapeiam diretamente os tokens
+ * de cor da marca (--color-accent-*) e do neutro (--color-surface-muted).
  */
 export function Badge({ children, variant = 'neutral' }: BadgeProps) {
   return <span className={`mv-badge mv-badge--${variant}`}>{children}</span>;

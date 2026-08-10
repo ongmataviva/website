@@ -7,7 +7,7 @@
   "preview_urls": true,
 
   // Local dev: wrangler dev. Port 8786 é do Mata Viva (8787 é da
-  // Maritaka; 8788 = cms:server local; 8789 = boyuna).
+  // Maritaka; 8788 = cms:server local).
   "dev": {
     "ip": "localhost",
     "port": 8786

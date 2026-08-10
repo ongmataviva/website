@@ -19,18 +19,3 @@
   background: var(--color-accent-soft);
   color: var(--color-accent-strong);
 }
-
-.mv-badge--open {
-  background: var(--color-status-open-soft);
-  color: var(--color-status-open);
-}
-
-.mv-badge--progress {
-  background: var(--color-status-progress-soft);
-  color: var(--color-status-progress);
-}
-
-.mv-badge--resolved {
-  background: var(--color-status-resolved-soft);
-  color: var(--color-status-resolved);
-}

@@ -38,8 +38,8 @@ export const Pequeno: Story = {
 
 export const ComoLink: Story = {
   args: {
-    href: '/ocorrencias',
+    href: '/projetos',
     variant: 'ghost',
-    children: 'Abrir mapa de ocorrências',
+    children: 'Conhecer os projetos',
   },
 };
