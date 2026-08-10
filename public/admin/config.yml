@@ -1,21 +1,88 @@
 backend:
   name: github
   repo: ongmataviva/website
-  branch: main
-  base_url: https://ongmataviva.pages.dev # Points to the root domain of this Cloudflare Pages deployment
+  branch: content
+  base_url: https://website.ongmataviva.workers.dev # Points to the Worker deployment (temp workers.dev)
 
-local_backend: true # Automatically intercepts API calls when the local proxy runs
+local_backend:
+  url: http://localhost:9191/api/v1 # Local proxy (cms:server / Laika); porta dedicada 9191
 
 media_folder: "public/images" # Repo-relative path where uploaded media is stored
 public_folder: "/images" # URL path used to reference media from the public/ root
 
+locale: pt # Idioma do Painel (pt-BR)
+
+# Emails Google com poderes de administração no Painel (chave custom,
+# lida pelo painel via useConfig). Sobrescrever autor, excluir entradas
+# e editar coleções autor/categoria/pagina são privilégios de admin.
+# Com o login por Google, `user.login` é o email da conta.
+admin_logins:
+  - "alt.gsj@gmail.com"
+  - "luamoraesfarah@gmail.com"
+
 collections:
-  - name: "content"
-    label: "Content Blocks"
-    folder: "content" # Target directory (repo-relative) where files are created/edited
+
+  # ─── Portal collections ──────────────────────────────────────────────
+
+  - name: "categoria"
+    label: "Categorias"
+    folder: "content/categoria"
+    create: true
+    identifier_field: slug
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Slug", name: "slug", widget: "string", hint: "Ex.: meio-ambiente. Vira o nome do arquivo .md." }
+      - { label: "Nome", name: "nome", widget: "string" }
+      - { label: "Descrição", name: "descricao", widget: "text", required: false }
+      - { label: "Imagem", name: "imagem", widget: "image", required: false }
+
+  - name: "autor"
+    label: "Autores"
+    folder: "content/autor"
     create: true
     slug: "{{slug}}"
+    editor:
+      preview: false
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Nome", name: "title", widget: "string" }
+      - { label: "Cargo", name: "cargo", widget: "string", required: false }
+      - { label: "Login GitHub", name: "login", widget: "string", required: false, hint: "Username GitHub do colaborador. Vincula este autor ao usuário autenticado (1:1). Apenas admins editam." }
+      - { label: "Bio", name: "bio", widget: "text", required: false }
+      - { label: "Avatar", name: "avatar", widget: "image", required: false }
+
+  - name: "noticia"
+    label: "Notícias"
+    folder: "content/noticia"
+    create: true
+    identifier_field: titulo
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "Ex.: nova-area-de-preservacao. Vira o nome do arquivo." }
+      - { label: "Data", name: "data", widget: "date" }
+      - { label: "Atualizada em", name: "atualizada", widget: "datetime", required: false }
+      - { label: "Categoria", name: "categoria", widget: "string", hint: "Slug da categoria" }
+      - { label: "Autor", name: "autor", widget: "string", hint: "Slug do autor" }
+      - { label: "Tags", name: "tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" }, required: false }
+      - { label: "Destaque", name: "destaque", widget: "boolean", default: false, required: false }
+      - { label: "Imagem de capa", name: "imagem", widget: "image", required: false }
+      - { label: "Resumo", name: "resumo", widget: "text" }
+      - { label: "Corpo", name: "body", widget: "markdown" }
+
+  - name: "pagina"
+    label: "Páginas"
+    folder: "content/pagina"
+    create: true
+    identifier_field: titulo
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Slug", name: "slug", widget: "string", hint: "Ex.: sobre. Vira o nome do arquivo e a URL." }
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Imagem", name: "imagem", widget: "image", required: false }
+      - { label: "Corpo", name: "body", widget: "markdown" }

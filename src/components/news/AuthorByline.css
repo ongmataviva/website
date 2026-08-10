@@ -1,0 +1,45 @@
+/* AuthorByline — exibição compacta do autor (só tokens Ocelot). */
+
+.mv-author-byline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.mv-author-byline__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mv-author-byline__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mv-author-byline__name {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 500;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+}
+
+.mv-author-byline__cargo {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: var(--color-meta);
+  line-height: var(--leading-tight);
+}

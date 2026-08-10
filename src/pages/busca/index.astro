@@ -1,0 +1,16 @@
+---
+// Busca — SearchResults (client-side sobre data/index.json, Opção C).
+// Substitui o Pagefind: com o conteúdo editorial dinâmico via GitHub, a
+// busca filtra o índice público por título, resumo e tags em runtime.
+import Layout from '../../layouts/Layout.astro';
+import SearchResults from '../../components/search/SearchResults';
+---
+
+<Layout
+  title="Busca — Mata Viva"
+  description="Buscar no portal Mata Viva"
+  activeHref="/busca"
+>
+  <h1 class="mv-page-title">Busca</h1>
+  <SearchResults client:only="react" />
+</Layout>

@@ -1,0 +1,12 @@
+---
+// Shell único — todas as rotas de conteúdo (/, /noticias, /noticias/[slug],
+// /categoria/[slug], /autor/[slug], /tag/[tag], páginas institucionais)
+// são servidas pelo Worker com este mesmo esqueleto; o ContentApp decide o
+// que renderizar com base no pathname e busca os dados no GitHub (Opção C).
+import Layout from '../layouts/Layout.astro';
+import ContentApp from '../components/content/ContentApp';
+---
+
+<Layout title="Mata Viva — Bacia do Igarapé Água Branca">
+  <ContentApp client:only="react" />
+</Layout>

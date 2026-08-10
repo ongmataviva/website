@@ -1,0 +1,36 @@
+/* Badge — rótulo de status em pílula (só tokens Ocelot). */
+
+.mv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+  color: var(--color-ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+.mv-badge--accent {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.mv-badge--open {
+  background: var(--color-status-open-soft);
+  color: var(--color-status-open);
+}
+
+.mv-badge--progress {
+  background: var(--color-status-progress-soft);
+  color: var(--color-status-progress);
+}
+
+.mv-badge--resolved {
+  background: var(--color-status-resolved-soft);
+  color: var(--color-status-resolved);
+}

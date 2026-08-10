@@ -1,0 +1,13 @@
+/* ContentApp — estados de carregamento/erro do router client (Opção C). */
+
+.mv-content-loading {
+  min-height: 50vh;
+}
+
+.mv-content-error {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-soft);
+  margin: var(--space-6) 0;
+}

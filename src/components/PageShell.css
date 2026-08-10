@@ -1,0 +1,61 @@
+/* PageShell — página institucional genérica (só tokens Ocelot). */
+
+.mv-page-shell {
+  max-width: var(--max-width-content);
+  margin-inline: auto;
+  padding: var(--space-12) var(--space-6);
+}
+
+.mv-page-shell__title {
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  line-height: var(--leading-display);
+  color: var(--color-ink);
+}
+
+.mv-page-shell__img {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-8);
+}
+
+/* Prose styling for the rendered HTML body */
+.mv-page-shell__body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink);
+}
+
+.mv-page-shell__body p {
+  margin: 0 0 var(--space-4);
+}
+
+.mv-page-shell__body ul,
+.mv-page-shell__body ol {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-6);
+}
+
+.mv-page-shell__body li {
+  margin-bottom: var(--space-2);
+}
+
+.mv-page-shell__body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.mv-page-shell__body a:hover {
+  color: var(--color-accent-hover);
+}
+
+.mv-page-shell__body strong {
+  font-weight: 600;
+}

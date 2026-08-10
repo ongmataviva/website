@@ -1,0 +1,40 @@
+/* SearchResults — busca client-side sobre data/index.json (Opção C).
+ * Substitui o Pagefind: o índice Pagefind era gerado a partir do HTML
+ * estático em build; com o conteúdo dinâmico via GitHub, a busca passa a
+ * filtrar o index público em runtime. */
+
+.mv-search {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.mv-search__input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-ink);
+  background: var(--color-paper);
+}
+
+.mv-search__input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.mv-search__meta {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.mv-search__empty {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-soft);
+}

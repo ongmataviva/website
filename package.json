@@ -5,17 +5,50 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "bash scripts/link-trae.sh",
+    "postinstall": "bash scripts/link-trae.sh && node scripts/patch-decap-cms-encoding.mjs",
     "harness:link": "bash scripts/link-trae.sh",
     "harness:sync": "bash scripts/link-trae.sh",
     "harness:codegen": "ybyra-harness codegen",
-    "cms:proxy": "decap-cms-server"
+    "cms:build": "esbuild admin-src/index.jsx --bundle --outfile=public/admin/cms.js --format=iife --minify --jsx=automatic --loader:.css=text --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.gif=file --loader:.woff2=file --loader:.woff=file --loader:.ttf=file --loader:.eot=file",
+    "cms:build:laika": "esbuild admin-src/index.jsx --bundle --outfile=.local/admin/cms-laika.js --format=iife --minify --jsx=automatic --loader:.css=text --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.gif=file --loader:.woff2=file --loader:.woff=file --loader:.ttf=file --loader:.eot=file",
+    "cms:server": "esbuild server/index.mjs --bundle --platform=node --format=cjs --outfile=.local/server/index.cjs && node --env-file-if-exists=.env .local/server/index.cjs",
+    "dev": "astro dev",
+    "dev:all": "bash scripts/dev-all.sh",
+    "build": "astro build && cp public/admin/cms.js dist/admin/cms.js",
+    "deploy": "wrangler deploy",
+    "dev:worker": "wrangler dev",
+    "preview": "astro preview",
+    "astro": "astro",
+    "storybook": "storybook dev -p 6106",
+    "build-storybook": "storybook build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.2.1",
+    "@storybook/addon-a11y": "^10.5.6",
+    "@storybook/addon-docs": "^10.5.6",
+    "@storybook/react": "^10.5.6",
+    "@storybook/react-vite": "^10.5.6",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@ybyra/harness": "file:../mine/ybyra-harness",
-    "decap-cms-server": "^3.3.1"
+    "js-yaml": "^5.2.3",
+    "storybook": "^10.5.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0",
+    "wrangler": "^4.118.0"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/react": "^6.0.2",
+    "@laikacms/decap-cms": "4.1.0-alpha.5",
+    "@mdxeditor/editor": "^4.2.0",
+    "astro": "^7.1.6",
+    "cookie": "^2.0.1",
+    "esbuild": "^0.28.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

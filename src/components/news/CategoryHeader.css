@@ -1,0 +1,25 @@
+/* CategoryHeader — cabeçalho de página de categoria (só tokens Ocelot). */
+
+.mv-category-header {
+  max-width: var(--max-width-content);
+  margin-inline: auto;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.mv-category-header__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 500;
+  line-height: var(--leading-display);
+  color: var(--color-ink);
+}
+
+.mv-category-header__desc {
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-soft);
+}

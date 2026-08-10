@@ -1,0 +1,11 @@
+/* NewsGrid — grade responsiva de cartões de notícia. */
+
+.mv-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-6);
+}
+
+.mv-news-grid__item {
+  min-width: 0;
+}

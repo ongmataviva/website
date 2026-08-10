@@ -1,0 +1,224 @@
+/*
+ * Design-token overrides for the Decap CMS admin.
+ *
+ * The fork's `ui/*` components (AlertDialog, Dialog, Popover, Select, …) style
+ * themselves with shadcn-style CSS custom properties (`--popover`,
+ * `--popover-foreground`, …). Those tokens are only mounted by the richtext
+ * editor's `EditorGlobalStyles`, so on collections without a markdown/richtext
+ * field (e.g. Categorias) the tokens are undefined and portaled surfaces render
+ * with a transparent background. The block below defines the same light/dark
+ * token set at the app level so dialogs/popovers always have a background.
+ * Values mirror ui/editor/themes/GlobalStyles.js in @laikacms/decap-cms.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #020817;
+  --card: #ffffff;
+  --card-foreground: #020817;
+  --popover: #ffffff;
+  --popover-foreground: #020817;
+  --primary: #0f172a;
+  --primary-foreground: #f8fafc;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0f172a;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #020817;
+  --foreground: #f8fafc;
+  --card: #020817;
+  --card-foreground: #f8fafc;
+  --popover: #020817;
+  --popover-foreground: #f8fafc;
+  --primary: #f8fafc;
+  --primary-foreground: #0f172a;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #f8fafc;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #cbd5e1;
+}
+
+/* Belt-and-suspenders: guarantee a background on portaled surfaces even if a
+   token somehow fails to resolve. */
+[data-slot="alert-dialog-content"],
+[data-slot="dialog-content"],
+[data-slot="popover-content"] {
+  background-color: var(--popover, #ffffff);
+}
+
+/* ---------------------------------------------------------------------------
+   News management (noticia collection) — custom entry cards + category filter.
+   Card markup lives in admin-src/news-entry-card.jsx; the pinned filter bar
+   lives in admin-src/category-filter-bar.jsx.
+--------------------------------------------------------------------------- */
+
+/* Pinned ("cativo") category filter — sticks below the Laika header
+   (topBarHeight = 56px) so it stays visible while scrolling the list. */
+.cmv-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  position: sticky;
+  top: 56px;
+  z-index: 20;
+  padding: 10px 0 12px;
+  margin-bottom: 14px;
+  background: var(--decap-color-background, #eff0f4);
+  border-bottom: 1px solid var(--decap-color-textFieldBorder, #dfdfe3);
+}
+
+.cmv-chip {
+  appearance: none;
+  border: 1px solid var(--decap-color-textFieldBorder, #dfdfe3);
+  border-radius: 999px;
+  background: var(--decap-color-foreground, #ffffff);
+  color: var(--decap-color-controlLabel, #5d626f);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cmv-chip:hover {
+  border-color: var(--decap-color-active, #3a69c7);
+  color: var(--decap-color-active, #3a69c7);
+}
+
+.cmv-chip-active,
+.cmv-chip-active:hover {
+  background: var(--decap-color-active, #3a69c7);
+  border-color: var(--decap-color-active, #3a69c7);
+  color: #ffffff;
+}
+
+/* Entry cards. Layout (flex-basis of the grid item) is set inline in JSX;
+   only the visual layer lives here. */
+.cmv-news-card a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-decoration: none;
+  border: 1px solid var(--decap-color-textFieldBorder, #dfdfe3);
+  border-radius: 5px;
+  background: var(--decap-color-foreground, #ffffff);
+  padding: 14px 16px;
+  height: 100%;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cmv-news-card a:hover {
+  border-color: var(--decap-color-active, #3a69c7);
+  box-shadow: 0 2px 6px 0 rgba(68, 74, 87, 0.12);
+}
+
+.cmv-news-card--list .cmv-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmv-title {
+  color: var(--decap-color-textLead, #313d3e);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.cmv-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cmv-meta-date {
+  color: var(--decap-color-controlLabel, #5d626f);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.cmv-meta-cat {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--decap-color-active, #3a69c7);
+  background: var(--decap-color-activeBackground, #e8f5fe);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.cmv-meta-status {
+  color: var(--decap-color-warnText, #754e00);
+  background: var(--decap-color-warnBackground, #ffee9c);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+/* Grid view */
+.cmv-news-card--grid a {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.cmv-news-card--grid .cmv-title {
+  white-space: normal;
+}
+
+.cmv-media {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--decap-color-background, #eff0f4);
+}
+
+.cmv-media--placeholder {
+  background: linear-gradient(
+    135deg,
+    var(--decap-color-activeBackground, #e8f5fe),
+    var(--decap-color-background, #eff0f4)
+  );
+}
+
+.cmv-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 16px;
+}

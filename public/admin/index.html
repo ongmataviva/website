@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager</title>
-    <!-- Core Decap CMS Client Engine -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <title>Painel — Mata Viva</title>
+    <!-- Estilo do Painel (Ocelot: stone neutro + verde amazônico) -->
+    <link rel="stylesheet" href="./painel.css" />
   </head>
-  <body></body>
+  <body>
+    <div id="cms"></div>
+    <!-- Motor Decap/Laika headless + UI própria (deve carregar após #cms) -->
+    <script src="./cms.js"></script>
+  </body>
 </html>

@@ -1,0 +1,105 @@
+---
+// Layout base — todas as páginas compartilham a casca SiteShell
+// (NavBar + main + Footer) com os tokens Ocelot.
+import '../styles/tokens.css';
+import SiteShell from '../components/layout/SiteShell';
+import type { NavLink } from '../components/types';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  activeHref?: string;
+}
+
+const { title = 'Mata Viva', description = 'Mata Viva — Vigilância ambiental e transparência na bacia do Igarapé Água Branca, APA Tarumã, Manaus/AM.', activeHref } = Astro.props;
+
+const navLinks: NavLink[] = [
+  { label: 'Notícias', href: '/noticias' },
+  { label: 'Projetos', href: '/projetos' },
+  { label: 'Contato', href: '/contato' },
+];
+
+const footerLinks: NavLink[] = [
+  { label: 'Sobre', href: '/sobre' },
+  { label: 'Projetos', href: '/projetos' },
+  { label: 'Contato', href: '/contato' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <SiteShell
+      navLinks={navLinks}
+      footerLinks={footerLinks}
+      activeHref={activeHref}
+      client:load
+    >
+      <slot />
+    </SiteShell>
+  </body>
+</html>
+
+<style is:global>
+  /* Utilitários de página (títulos, seções) — tokens Ocelot */
+  .mv-page-title {
+    margin: 0 0 var(--space-8);
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: 500;
+    line-height: var(--leading-display);
+    color: var(--color-ink);
+  }
+
+  .mv-page-section {
+    margin-block: var(--space-16);
+  }
+
+  .mv-page-section:first-child {
+    margin-top: 0;
+  }
+
+  .mv-page-section__title {
+    margin: 0 0 var(--space-6);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 500;
+    line-height: var(--leading-display);
+    color: var(--color-ink);
+  }
+
+  .mv-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: var(--space-6);
+  }
+
+  .mv-back-link {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: all var(--dur-base) var(--ease-out);
+  }
+
+  .mv-back-link:hover {
+    background: var(--color-paper);
+  }
+
+  .mv-back-link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+</style>

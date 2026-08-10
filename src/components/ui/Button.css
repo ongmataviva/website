@@ -1,0 +1,56 @@
+/* Button — ações editoriais (só tokens Ocelot). */
+
+.mv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-body);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--dur-base) var(--ease-out);
+}
+
+.mv-btn--primary {
+  background: var(--btn-bg);
+  color: var(--btn-ink);
+}
+
+.mv-btn--primary:hover {
+  background: var(--btn-bg-hover);
+}
+
+.mv-btn--ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-line-strong);
+}
+
+.mv-btn--ghost:hover {
+  background: var(--color-surface);
+}
+
+.mv-btn--md {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-body);
+}
+
+.mv-btn--sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-caption);
+}
+
+.mv-btn:active {
+  transform: scale(0.98);
+}
+
+.mv-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
