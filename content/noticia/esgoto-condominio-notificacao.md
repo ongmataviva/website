@@ -1,6 +1,6 @@
 ---
 titulo: "Esgoto no Igarapé Água Branca: condomínio é notificado após cobrança da
-  comunidade!"
+  comunidade"
 slug: esgoto-condominio-notificacao
 data: 2026-07-28
 categoria: agua-e-saneamento
