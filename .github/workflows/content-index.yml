@@ -11,7 +11,7 @@ on:
   push:
     paths:
       - 'content/**'
-    branches: [main]
+    branches: [content]
 
 permissions:
   contents: write

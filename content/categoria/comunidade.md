@@ -1,5 +1,5 @@
 ---
 slug: comunidade
 nome: Comunidade
-descricao: Mobilização, mutirões e educação ambiental na bacia do Água Branca.
+descricao: Mobilização, mutirões e educação ambiental na região da APA Tarumã.
 ---
