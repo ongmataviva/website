@@ -1,1 +1,0 @@
-/Users/altgoncalves/Projects/mine/ybyra-harness/pack/cursor/commands/ybyra-compose-doc.md
