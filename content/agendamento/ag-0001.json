@@ -1,0 +1,9 @@
+{
+  "id": "ag-0001",
+  "ponto": "igarape-agua-branca-p1",
+  "operador": "teste@mataviva.org.br",
+  "frequencia": "semanal",
+  "dia_semana": "tuesday",
+  "proxima_coleta": "2026-08-11",
+  "ativo": true
+}

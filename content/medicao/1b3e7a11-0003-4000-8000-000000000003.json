@@ -1,0 +1,25 @@
+{
+  "id": "1b3e7a11-0003-4000-8000-000000000003",
+  "ponto": "igarape-agua-branca-p1",
+  "data_hora": "2026-08-03T09:05:00.000Z",
+  "operador": "teste@mataviva.org.br",
+  "localizacao": {
+    "latitude": -3.02952,
+    "longitude": -60.05002
+  },
+  "parametros": {
+    "temperatura_c": 28.2,
+    "ph": 7.0,
+    "turbidez_ntu": 3.1,
+    "condutividade_ec_us_cm": 44.8,
+    "oxigenio_dissolvido_mg_l": 6.5,
+    "coliformes_fecais_mpn_100ml": 130
+  },
+  "evidencias": [],
+  "dispositivo": {
+    "fonte": "manual",
+    "instrumentos": ["termômetro XYZ-100", "pHmetro XYZ-200", "condutivímetro XYZ-300"]
+  },
+  "criado_em": "2026-08-03T09:10:00.000Z",
+  "sincronizado_em": "2026-08-03T09:58:00.000Z"
+}

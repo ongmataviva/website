@@ -1,0 +1,11 @@
+{
+  "slug": "igarape-agua-branca-p1",
+  "nome": "P1 — Cabeceira (Igarapé Água Branca)",
+  "bacia": "igarape-agua-branca",
+  "descricao": "Ponto de referência na cabeceira do igarapé, próximo à ponte da estrada. Exemplo de dados para desenvolvimento.",
+  "localizacao": {
+    "latitude": -3.029484,
+    "longitude": -60.049982
+  },
+  "ativo": true
+}
