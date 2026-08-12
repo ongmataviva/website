@@ -54,7 +54,7 @@ public/admin/         Bundle servido do admin: cms.js, config.yml, painel.css
 public/images/        Mídia commitada pelo CMS (espelho no GitHub)
 server/               Dev server local (proxy filesystem + shell Laika)
 scripts/              patch-decap-cms-encoding.mjs (postinstall),
-                      dev-all.sh, link-trae.sh (harness)
+                      dev-all.sh
 .github/workflows/    (branch content) content-index.yml
 data/index.json       (branch content) índice público de listagens
 ```

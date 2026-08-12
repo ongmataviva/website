@@ -55,9 +55,6 @@ devDependencies:
   '@types/react-dom':
     specifier: ^19.2.4
     version: 19.2.4(@types/react@19.2.18)
-  '@ybyra/harness':
-    specifier: file:../mine/ybyra-harness
-    version: file:../mine/ybyra-harness
   js-yaml:
     specifier: ^5.2.3
     version: 5.2.3
@@ -9382,11 +9379,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
-
-  file:../mine/ybyra-harness:
-    resolution: {directory: ../mine/ybyra-harness, type: directory}
-    name: '@ybyra/harness'
-    version: 0.2.0
-    engines: {bun: '>=1.2'}
-    hasBin: true
-    dev: true

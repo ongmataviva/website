@@ -1,10 +1,14 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAuth, useConfig, useEntry, useAppSelector } from '@laikacms/decap-cms/core';
 
 /* ============================================================
    Permissões do Painel (M3) — vínculo Autor ↔ usuário autenticado.
 
-   - Admin: logins da chave `admin_logins` do config.yml (GitHub).
+   - Admin: quem decide é o Worker (/api/me), a partir do bootstrap
+     (ADMIN_EMAILS, secret) ∪ lista assinada de admins
+     (data/editor_logins.json). O painel nunca vê a chave HMAC.
+   - canEditList: quem tem o cookie de admin (bootstrap) — só essa
+     pessoa gerencia a lista de equipe pela página /equipe.
    - Vínculo: autor da coleção `autor` cujo campo `login` casa com
      `user.login` (1:1, case-insensitive).
    - Não-admin só cria notícia se tiver autor vinculado (o campo
@@ -33,7 +37,40 @@ export function usePermissions() {
     () => (Array.isArray(config?.admin_logins) ? config.admin_logins.map(norm) : []),
     [config],
   );
-  const isAdmin = isDevProxy || (login !== '' && adminLogins.includes(login));
+
+  // Autoridade real (produção): o Worker responde quem é admin e quem
+  // pode gerir a lista de equipe. O fallback do config.yml só vale em
+  // dev/Storybook (proxy trata tudo como admin de qualquer forma).
+  const [server, setServer] = useState({ isAdmin: false, canEditList: false, loaded: false });
+  useEffect(() => {
+    let alive = true;
+    if (isDevProxy) {
+      setServer({ isAdmin: true, canEditList: true, loaded: true });
+      return () => { alive = false; };
+    }
+    if (!login) {
+      setServer({ isAdmin: false, canEditList: false, loaded: true });
+      return () => { alive = false; };
+    }
+    fetch(`/api/me?email=${encodeURIComponent(login)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!alive) return;
+        setServer({
+          isAdmin: Boolean(d?.isAdmin),
+          canEditList: Boolean(d?.canEditList),
+          loaded: true,
+        });
+      })
+      .catch(() => {
+        if (alive) setServer((s) => ({ ...s, loaded: true }));
+      });
+    return () => { alive = false; };
+  }, [login, isDevProxy]);
+
+  const isAdmin =
+    isDevProxy || server.isAdmin || (login !== '' && adminLogins.includes(login));
+  const canEditList = isDevProxy || server.canEditList;
 
   const myAutorSlug = useMemo(() => {
     const page = entriesState?.pages?.autor;
@@ -47,6 +84,7 @@ export function usePermissions() {
 
   return {
     isAdmin,
+    canEditList, // gestão da equipe (página /equipe) — só bootstrap
     myAutorSlug, // slug do autor vinculado ao usuário logado (ou null)
     canCreateNoticia: isAdmin || !!myAutorSlug,
     canEditNoticia(autorSlug) {

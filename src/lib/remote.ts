@@ -24,7 +24,10 @@ export interface SiteIndex {
 }
 
 export async function fetchIndex(): Promise<SiteIndex> {
-  const res = await fetch(`${RAW_BASE}/data/index.json`);
+  // cache: 'no-store' — nunca servir o índice stale do cache do navegador
+  // (raw.githubusercontent envia max-age=300; sem isso, edições do admin
+  // demoravam até 5 min para aparecer).
+  const res = await fetch(`${RAW_BASE}/data/index.json`, { cache: 'no-store' });
   if (!res.ok) throw new Error(`index indisponível (${res.status})`);
   return res.json();
 }
@@ -34,7 +37,7 @@ export async function fetchMarkdown(
   collection: 'noticia' | 'pagina',
   slug: string,
 ): Promise<{ data: Record<string, unknown>; body: string }> {
-  const res = await fetch(`${RAW_BASE}/content/${collection}/${slug}.md`);
+  const res = await fetch(`${RAW_BASE}/content/${collection}/${slug}.md`, { cache: 'no-store' });
   if (!res.ok) throw new Error(`documento não encontrado (${res.status})`);
   return parseFrontmatter(await res.text());
 }

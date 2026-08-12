@@ -362,6 +362,13 @@ export function EntryEditor({ collectionName, slug, isNew }) {
       setNotice('Não foi possível salvar. Verifique os campos obrigatórios e tente de novo.');
       setBusy(false);
     } else {
+      // Purga o cache do site (worker) para a edição aparecer já no próximo
+      // request. O worker cacheia os fetches do raw (index.json + markdown)
+      // por até 5 min; sem isso, mudanças feitas aqui só apareciam depois.
+      const saved = st?.draftEntry?.data || {};
+      const paths = ['data/index.json'];
+      if (saved.slug) paths.push(`content/${collection}/${String(saved.slug)}.md`);
+      fetch(`/_purge?paths=${encodeURIComponent(paths.join(','))}`).catch(() => {});
       navigate('collection', { collectionName }, { replace: true });
     }
   };

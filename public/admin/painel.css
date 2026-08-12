@@ -17,6 +17,8 @@
   --color-accent: #3f6b4f;
   --color-accent-strong: #33584a;
   --color-accent-ink: #ffffff;
+  --color-selection-bg: var(--color-accent);
+  --color-selection-ink: var(--color-accent-ink);
   --color-danger: #b3402c;
   --color-danger-soft: #f7e9e4;
 
@@ -105,7 +107,8 @@ body {
 }
 
 ::selection {
-  background: rgb(63 107 79 / 0.22);
+  background: var(--color-selection-bg);
+  color: var(--color-selection-ink);
 }
 
 /* ============ Shell ============ */
@@ -1135,10 +1138,14 @@ body {
 }
 
 .pnl-mdx .mdxeditor {
-  --basePageBg: var(--color-paper);
-  --baseBase: var(--color-paper);
+  --editor-bg: var(--color-paper);
+  --editor-text: var(--color-ink);
+  --editor-selection-bg: var(--color-accent);
+  --editor-selection-ink: var(--color-accent-ink);
+  --basePageBg: var(--editor-bg);
+  --baseBase: var(--editor-bg);
   --baseBgSubtle: var(--color-surface);
-  --baseBg: var(--color-paper);
+  --baseBg: var(--editor-bg);
   --baseBgHover: var(--color-surface);
   --baseBgActive: var(--color-surface-muted);
   --baseLine: var(--color-line);
@@ -1146,14 +1153,14 @@ body {
   --baseBorderHover: var(--color-ink-faint);
   --baseSolid: var(--color-ink-soft);
   --baseSolidHover: var(--color-ink);
-  --baseText: var(--color-ink);
-  --baseTextContrast: var(--color-paper);
+  --baseText: var(--editor-text);
+  --baseTextContrast: var(--editor-text);
   --accentBg: rgb(63 107 79 / 0.1);
   --accentBgActive: rgb(63 107 79 / 0.18);
   --accentBorder: var(--color-accent);
   --accentSolid: var(--color-accent);
   --accentSolidHover: var(--color-accent-strong);
-  --accentText: var(--color-paper);
+  --accentText: var(--color-accent-strong);
 }
 
 .pnl-mdx .mdxeditor-toolbar {
@@ -1173,6 +1180,11 @@ body {
 
 .pnl-mdx .pnl-mdx-content a {
   color: var(--color-accent);
+}
+
+.pnl-mdx .pnl-mdx-content::selection {
+  background: var(--editor-selection-bg);
+  color: var(--editor-selection-ink);
 }
 
 /* ============ Responsivo ============ */
@@ -1328,4 +1340,117 @@ body {
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
   padding: var(--space-6);
+}
+
+/* ============================================================
+   Equipe — gestão de acesso (lista assinada data/editor_logins.json)
+   ============================================================ */
+
+.pnl-equipe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 42rem;
+}
+
+.pnl-equipe-note {
+  background: var(--color-surface-muted);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.pnl-equipe-list {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.pnl-equipe-list-head {
+  margin-bottom: var(--space-4);
+}
+
+.pnl-equipe-list-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  margin: 0 0 var(--space-1);
+  color: var(--color-ink);
+}
+
+.pnl-equipe-list-hint {
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  margin: 0;
+}
+
+.pnl-equipe-emails {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.pnl-equipe-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.pnl-equipe-email {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  word-break: break-all;
+  min-width: 0;
+}
+
+.pnl-equipe-empty {
+  font-size: var(--text-sm);
+  color: var(--color-ink-faint);
+  padding: var(--space-2) 0;
+}
+
+.pnl-equipe-add {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.pnl-equipe-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+}
+
+.pnl-equipe-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background: var(--color-paper);
+}
+
+.pnl-equipe-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pnl-equipe-error {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
 }

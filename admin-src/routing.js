@@ -19,6 +19,13 @@ export function navigate(key, params, options) {
   else router.push(path);
 }
 
+// Navegação para rotas custom do Painel (fora da tabela padrão do motor),
+// ex.: a página /equipe.
+export function navigatePath(path, options) {
+  if (options?.replace) router.replace(path);
+  else router.push(path);
+}
+
 export function useRouterPath() {
   const [path, setPath] = useState(() => router.location().pathname);
   useEffect(() => router.subscribe((update) => setPath(update.location.pathname)), []);

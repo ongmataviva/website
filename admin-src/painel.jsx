@@ -10,9 +10,10 @@ import {
 } from '@laikacms/decap-cms/core';
 import { Button, Forbidden, LoadingScreen } from './ui';
 import { COLLECTION_ORDER, entityMeta } from './entities';
-import { navigate, useRouterPath } from './routing';
+import { navigate, navigatePath, useRouterPath } from './routing';
 import { CollectionList } from './collection-list';
 import { EntryEditor, NoticiaEntryGate } from './editor';
+import { EditorSettings } from './editor-settings';
 import { usePermissions } from './permissions';
 
 /* ============================================================
@@ -87,6 +88,7 @@ function Sidebar() {
   const { user, logout } = useAuth();
   const { collections } = useCollection();
   const entriesState = useAppSelector((state) => state.entries);
+  const perms = usePermissions();
   const [open, setOpen] = useState(false);
 
   const displayName = user?.name || user?.login || user?.email || 'Usuário local';
@@ -137,6 +139,22 @@ function Sidebar() {
         })}
       </nav>
 
+      {perms.canEditList ? (
+        <nav className="pnl-nav" aria-label="Administração">
+          <span className="pnl-nav-label">Administração</span>
+          <button
+            type="button"
+            className={path === '/equipe' ? 'pnl-nav-item pnl-nav-item--active' : 'pnl-nav-item'}
+            onClick={() => {
+              navigatePath('/equipe');
+              setOpen(false);
+            }}
+          >
+            <span>Equipe</span>
+          </button>
+        </nav>
+      ) : null}
+
       <div className="pnl-user">
         <span className="pnl-avatar" aria-hidden="true" />
         <div className="pnl-user-meta">
@@ -174,6 +192,14 @@ function PainelRoutes() {
       if (first) navigate('collection', { collectionName: first });
     }
   }, [path, match, first, navigate]);
+
+  // Rota custom do Painel (fora da tabela padrão do motor).
+  if (path === '/equipe') {
+    if (!perms.canEditList) {
+      return <Forbidden message="Somente administradores gerenciam a equipe." />;
+    }
+    return <EditorSettings />;
+  }
 
   if (!match) return null;
 
