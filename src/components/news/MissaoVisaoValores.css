@@ -1,0 +1,52 @@
+/* MissaoVisaoValores — cards no centro da home */
+
+.mv-mvv {
+  padding: var(--space-16) 0;
+}
+
+.mv-mvv__inner {
+  max-width: var(--max-width-page);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.mv-mvv__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.mv-mvv__card {
+  background: var(--color-paper);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+
+.mv-mvv__card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.mv-mvv__card-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.mv-mvv__card-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 48rem) {
+  .mv-mvv__grid {
+    grid-template-columns: 1fr;
+  }
+}

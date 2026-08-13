@@ -4,27 +4,50 @@
    stone + verde amazônico como acento.
    ============================================================ */
 
+/* ─── Poppins — self-hosted (Google Fonts OFL) ──────────────── */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Poppins-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Poppins-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Poppins-Bold.woff2') format('woff2');
+}
+
 :root {
-  /* Paleta (alinhada com src/styles/tokens.css) */
-  --color-paper: #faf9f6;
-  --color-surface: #f3f1ec;
-  --color-surface-muted: #ebe8e0;
-  --color-ink: #26221c;
-  --color-ink-soft: #57534e;
+  /* Paleta (alinhada com src/styles/tokens.css — Figma redesign) */
+  --color-paper: #ffffff;
+  --color-surface: #f7f8fa;
+  --color-surface-muted: #f0f0f0;
+  --color-ink: #333333;
+  --color-ink-soft: #525252;
   --color-ink-faint: #8f8a81;
   --color-line: #e3dfd6;
   --color-line-strong: #d4cfc4;
-  --color-accent: #3f6b4f;
-  --color-accent-strong: #33584a;
+  --color-accent: #528c40;
+  --color-accent-strong: #4b6642;
   --color-accent-ink: #ffffff;
   --color-selection-bg: var(--color-accent);
   --color-selection-ink: var(--color-accent-ink);
   --color-danger: #b3402c;
   --color-danger-soft: #f7e9e4;
 
-  /* Tipografia */
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Tipografia — Poppins */
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Escala editorial */
@@ -54,35 +77,35 @@
   --radius-pill: 999px;
 
   /* Sombras ambientes */
-  --shadow-card: 0 1px 2px rgb(38 34 28 / 0.05), 0 4px 16px rgb(38 34 28 / 0.05);
-  --shadow-float: 0 2px 6px rgb(38 34 28 / 0.08), 0 12px 32px rgb(38 34 28 / 0.12);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.05), 0 4px 16px rgb(0 0 0 / 0.05);
+  --shadow-float: 0 4px 26.4px rgb(0 0 0 / 0.12);
 
   /* Movimento */
   --dur-base: 200ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Tokens do fork (dialogos, media library, etc.) */
-  --background: #faf9f6;
-  --foreground: #26221c;
-  --card: #faf9f6;
-  --card-foreground: #26221c;
-  --popover: #faf9f6;
-  --popover-foreground: #26221c;
-  --primary: #3f6b4f;
+  /* Tokens do fork (dialogos, media library, etc.) — inalterados */
+  --background: #ffffff;
+  --foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #333333;
+  --popover: #ffffff;
+  --popover-foreground: #333333;
+  --primary: #528c40;
   --primary-foreground: #ffffff;
-  --secondary: #ebe8e0;
-  --secondary-foreground: #26221c;
-  --muted: #ebe8e0;
-  --muted-foreground: #6f6a61;
-  --accent: #e8ede6;
-  --accent-foreground: #2f5238;
+  --secondary: #f0f0f0;
+  --secondary-foreground: #333333;
+  --muted: #f0f0f0;
+  --muted-foreground: #525252;
+  --accent: #e4ebe0;
+  --accent-foreground: #528c40;
   --destructive: #b3402c;
   --destructive-foreground: #ffffff;
   --border: #e3dfd6;
   --input: #d4cfc4;
-  --ring: #3f6b4f;
+  --ring: #528c40;
   --radius: 8px;
-  --shadow: 0 1px 2px rgb(38 34 28 / 0.05), 0 4px 16px rgb(38 34 28 / 0.05);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 4px 16px rgb(0 0 0 / 0.05);
 }
 
 * {
@@ -1453,4 +1476,287 @@ body {
 .pnl-equipe-error {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);
+}
+
+/* ─── IA Config page ─────────────────────────────────────── */
+
+.pnl-ia-config-fields {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.pnl-ia-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.pnl-ia-error {
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.pnl-ia-test-ok {
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent-muted);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+}
+
+.pnl-ia-test-error {
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-danger-muted);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+/* ─── AI Chat Panel (overlay) ────────────────────────────── */
+
+.pnl-editor-header {
+  position: relative;
+}
+
+.pnl-ai-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: var(--space-md);
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-page);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--color-ink-mid);
+  font-size: 1.1rem;
+}
+
+.pnl-ai-toggle-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.pnl-ai-toggle-btn--active {
+  background: var(--color-accent-muted);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.pnl-ai-overlay {
+  position: fixed;
+  right: var(--space-xl);
+  top: 80px;
+  bottom: var(--space-xl);
+  width: 420px;
+  max-width: calc(100vw - 60px);
+  background: var(--bg-page);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.pnl-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--border-soft);
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.pnl-ai-header:active {
+  cursor: grabbing;
+}
+
+.pnl-ai-title {
+  font-weight: 600;
+  font-size: var(--text-md);
+  color: var(--color-ink);
+}
+
+.pnl-ai-close-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink-faint);
+  font-size: 1.2rem;
+  transition: color 0.15s;
+}
+
+.pnl-ai-close-btn:hover {
+  color: var(--color-ink-soft);
+}
+
+.pnl-ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pnl-ai-msg {
+  line-height: 1.5;
+}
+
+.pnl-ai-msg--user {
+  text-align: right;
+}
+
+.pnl-ai-msg--assistant .pnl-ai-msg-body {
+  white-space: pre-wrap;
+}
+
+.pnl-ai-msg--system {
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  font-style: italic;
+}
+
+.pnl-ai-welcome {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+.pnl-ai-welcome p {
+  margin: var(--space-xs) 0;
+  color: var(--color-ink-mid);
+  font-size: var(--text-sm);
+}
+
+.pnl-ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.pnl-ai-suggestions button {
+  font-size: var(--text-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-ink-mid);
+  transition: all 0.15s;
+}
+
+.pnl-ai-suggestions button:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.pnl-ai-tool-card {
+  margin-top: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+}
+
+.pnl-ai-tool-label {
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-xs);
+}
+
+.pnl-ai-tool-args {
+  font-size: var(--text-xs);
+  background: var(--bg-code);
+  padding: var(--space-sm);
+  border-radius: var(--radius-xs);
+  overflow-x: auto;
+  margin: var(--space-xs) 0;
+}
+
+.pnl-ai-tool-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.pnl-ai-tool-result {
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-accent-muted);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+}
+
+.pnl-ai-input {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-top: 1px solid var(--border-soft);
+  flex-shrink: 0;
+  background: var(--bg-surface);
+}
+
+.pnl-ai-input-text {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  background: var(--bg-page);
+  color: var(--color-ink);
+  min-width: 0;
+}
+
+.pnl-ai-input-text:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.pnl-ai-input-text::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.pnl-ai-send-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.8rem;
+  transition: opacity 0.15s;
+}
+
+.pnl-ai-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pnl-ai-send-btn:not(:disabled):hover {
+  opacity: 0.85;
 }

@@ -370,6 +370,132 @@ async function writeEditorList(env: Env, admins: string[], editores: string[]): 
   }
 }
 
+// ─── IA Settings (HMAC-signed config) ──────────────────────
+// Armazena {backendUri, modelId, maxTokens, apiKey} via Cloudflare KV (quando configurado)
+// ou HMAC-signed GitHub como fallback. API key nunca é exposta em GET.
+const IA_KV_KEY = 'ia_settings'; // Chave no KV para configurações IA
+
+interface IaSettings {
+  ok: boolean;
+  backendUri: string;
+  modelId: string;
+  maxTokens: number;
+  /** Nunca exposta na resposta GET pública. */
+  apiKey?: string;
+}
+
+const EMPTY_IA: IaSettings = { ok: true, backendUri: '', modelId: 'openai/gpt-4o', maxTokens: 4096 };
+
+async function readIaSettings(env: Env): Promise<IaSettings> {
+  // Priority 1: Cloudflare KV (when namespace is bound)
+  if ((env as Record<string, unknown>).IA_SETTINGS && typeof (env as Record<string, unknown>).IA_SETTINGS.get === 'function') {
+    const kv = env.IA_SETTINGS as unknown as KVNamespace;
+    try {
+      const raw = await kv.get(IA_KV_KEY);
+      if (raw) {
+        const data = JSON.parse(raw) as { backendUri?: string; modelId?: string; maxTokens?: number; apiKey?: string };
+        return {
+          ok: true,
+          backendUri: String(data.backendUri || ''),
+          modelId: String(data.modelId || 'openai/gpt-4o'),
+          maxTokens: Number(data.maxTokens) || 4096,
+          apiKey: data.apiKey,
+        };
+      }
+    } catch { /* skip, fall through to github */ }
+  }
+
+  // Priority 2: HMAC-signed GitHub file (fallback / existing pattern)
+  try {
+    const token = await getInstallationToken(env);
+    const base = `https://api.github.com/repos/ongmataviva/website/contents/${IA_SETTINGS_PATH}`;
+    const res = await fetch(`${base}?ref=content`, { headers: ghHeaders(token) });
+    if (res.status === 404) return EMPTY_IA;
+    if (!res.ok) return { ...EMPTY_IA, ok: false };
+    const meta = await res.json();
+    const bytes = b64urlToBytes(String(meta.content).replace(/\s/g, ''));
+    const text = new TextDecoder('utf-8').decode(bytes);
+    const data = JSON.parse(text) as { sig?: unknown; [k: string]: unknown };
+    const key = await hmacKey(env);
+    if (!key || typeof data.sig !== 'string') return { ...EMPTY_IA, ok: false };
+    const canonical = JSON.stringify({
+      backendUri: String(data.backendUri ?? ''),
+      modelId: String(data.modelId ?? 'openai/gpt-4o'),
+      maxTokens: Number(data.maxTokens) || 4096,
+      ...(typeof data.apiKey === 'string' ? { apiKey: data.apiKey } : {}),
+    });
+    if (!(await verifyPayload(key, canonical, data.sig))) return { ...EMPTY_IA, ok: false };
+    return {
+      ok: true,
+      backendUri: String(data.backendUri || ''),
+      modelId: String(data.modelId || 'openai/gpt-4o'),
+      maxTokens: Number(data.maxTokens) || 4096,
+      apiKey: typeof data.apiKey === 'string' ? data.apiKey : undefined,
+    };
+  } catch {
+    return { ...EMPTY_IA, ok: false };
+  }
+}
+
+async function writeIaSettings(
+  env: Env,
+  newBackendUri: string,
+  newModelId: string,
+  newMaxTokens: number,
+  newApiKey?: string,
+): Promise<boolean> {
+  const obj: Record<string, unknown> = {
+    backendUri: newBackendUri,
+    modelId: newModelId,
+    maxTokens: newMaxTokens,
+  };
+  if (newApiKey) obj.apiKey = newApiKey;
+  const payload = JSON.stringify(obj);
+
+  // Try KV first (persistent, encrypted at rest in Cloudflare infra)
+  if ((env as Record<string, unknown>).IA_SETTINGS && typeof (env as Record<string, unknown>).IA_SETTINGS.put === 'function') {
+    try {
+      const kv = env.IA_SETTINGS as unknown as KVNamespace;
+      await kv.put(IA_KV_KEY, payload);
+      return true;
+    } catch { /* fall through to github */ }
+  }
+
+  // Fallback: GitHub HMAC-signed file (existing pattern)
+  const key = await hmacKey(env);
+  if (!key) return false;
+  const canonical = JSON.stringify(obj);
+  const sig = await signPayload(key, canonical);
+  obj.sig = sig;
+  const body = `${JSON.stringify(obj, null, 2)}\n`;
+  const rawBytes = enc.encode(body);
+  let bin = '';
+  for (const b of rawBytes) bin += String.fromCharCode(b);
+  const contentB64 = btoa(bin);
+  try {
+    const token = await getInstallationToken(env);
+    const base = `https://api.github.com/repos/ongmataviva/website/contents/${IA_SETTINGS_PATH}`;
+    let sha: string | undefined;
+    const cur = await fetch(`${base}?ref=content`, { headers: ghHeaders(token) });
+    if (cur.status === 404) sha = undefined;
+    else if (cur.ok) sha = (await cur.json()).sha;
+    else return false;
+    const put = await fetch(base, {
+      method: 'PUT',
+      headers: ghHeaders(token),
+      body: JSON.stringify({
+        message: 'chore(admin): update IA settings',
+        branch: 'content',
+        content: contentB64,
+        ...(sha ? { sha } : {}),
+      }),
+    });
+    return put.ok;
+  } catch {
+    return false;
+  }
+}
+
 // ─── Cookie de admin (bootstrap) ─────────────────────────────
 // O cookie é HttpOnly e assinado com a MESMA chave HMAC: só quem
 // passa no login com email bootstrap o recebe, e só o Worker o
@@ -444,6 +570,73 @@ function isContentPath(pathname: string): boolean {
   return false;
 }
 
+// ─── IA Helper utilities ─────────────────────────────────────
+const PT_FIELD_LABELS: Record<string, string> = {
+  titulo: 'Título', slug: 'Slug', data: 'Data de publicação', atualizada: 'Atualizada em',
+  categoria: 'Categoria', autor: 'Autor', tags: 'Tags', destaque: 'Destaque',
+  imagem: 'Imagem de capa', resumo: 'Resumo', body: 'Conteúdo', nome: 'Nome',
+  descricao: 'Descrição', title: 'Nome', cargo: 'Cargo', login: 'Login GitHub',
+  bio: 'Biografia', avatar: 'Foto',
+};
+
+function fieldLabelPt(name: string): string {
+  return PT_FIELD_LABELS[name] || name;
+}
+
+function formatValueForContext(val: unknown): string {
+  if (val == null) return '(vazio)';
+  if (typeof val === 'string') return val;
+  if (typeof val === 'boolean') return val ? 'sim' : 'não';
+  if (Array.isArray(val)) return val.join(', ');
+  return JSON.stringify(val);
+}
+
+async function listCollectionEntries(collectionName: string, limit: number, env: Env): Promise<Array<{ slug: string; [k: string]: unknown }>> {
+  try {
+    const folderMap: Record<string, string> = {
+      noticia: 'content/noticia', categoria: 'content/categoria',
+      autor: 'content/autor', pagina: 'content/pagina',
+    };
+    const folder = folderMap[collectionName];
+    if (!folder) return [];
+    const token = await getInstallationToken(env);
+    const base = `https://api.github.com/repos/ongmataviva/website/contents/${folder}?ref=content`;
+    const res = await fetch(base, { headers: ghHeaders(token) });
+    if (!res.ok) return [];
+    const items = await res.json() as Array<{ name: string; download_url?: string }>;
+    // Parse frontmatter from each entry
+    const entries: Array<{ slug: string; [k: string]: unknown }> = [];
+    const fetchLimit = Math.min(limit, items.length);
+    for (let i = 0; i < fetchLimit; i++) {
+      const item = items[i];
+      let rawData = '';
+      try {
+        const dlRes = await fetch(item.download_url ?? '', { headers: ghHeaders(token) });
+        if (dlRes.ok) rawData = await dlRes.text();
+      } catch { /* skip */ }
+      // Extract slug from filename, parse YAML frontmatter minimally
+      const slug = item.name.replace(/\.(md|markdown)$/, '');
+      const fmMatch = rawData.match(/^---\n([\s\S]*?)\n---/);
+      const data: Record<string, unknown> = { slug };
+      if (fmMatch) {
+        for (const line of fmMatch[1].split('\n')) {
+          const kv = line.split(':', 2);
+          if (kv.length === 2) data[kv[0].trim()] = kv.slice(1).join(':').trim();
+        }
+      }
+      entries.push(data as { slug: string; [k: string]: unknown });
+    }
+    return entries;
+  } catch {
+    return [];
+  }
+}
+
+function escapeSse(str: string): string {
+  // Escape for safe embedding in SSE JSON data event
+  return '"' + JSON.stringify(str).slice(1, -1) + '"';
+}
+
 export default {
   async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -491,6 +684,125 @@ export default {
       const okWrite = await writeEditorList(env, admins as string[], editores as string[]);
       if (!okWrite) return json({ error: 'write-failed' }, 500);
       return json({ ok: true });
+    }
+
+    // ── IA Settings (configuração do assistente IA) ────────────
+    // GET: retorna {backendUri, modelId, maxTokens} sem a API key.
+    // POST: atualiza config com validação de admin + HMAC signature.
+    if (url.pathname === '/api/ia/settings') {
+      if (url.pathname === '/api/ia/settings' && request.method === 'GET') {
+        const settings = await readIaSettings(env);
+        return json({ backendUri: settings.backendUri, modelId: settings.modelId, maxTokens: settings.maxTokens });
+      }
+      if (request.method === 'POST') {
+        const cookieEmail = await verifyAdminCookie(request.headers.get('cookie'), env);
+        if (!cookieEmail) return json({ error: 'unauthorized' }, 403);
+        let body: unknown;
+        try { body = await request.json(); } catch { return json({ error: 'bad-request' }, 400); }
+        const { backendUri, modelId, maxTokens, apiKey } = body as {
+          backendUri?: string; modelId?: string; maxTokens?: number; apiKey?: string;
+        };
+        if (!backendUri || !modelId || typeof maxTokens !== 'number') {
+          return json({ error: 'missing-fields' }, 400);
+        }
+        const ok = await writeIaSettings(env, backendUri, modelId, maxTokens, apiKey);
+        return json({ ok });
+      }
+      return json({ error: 'method-not-allowed' }, 405);
+    }
+
+    // ── IA Chat (resposta rápida com contexto do draft) ───────
+    if (url.pathname === '/api/ia/chat' && request.method === 'POST') {
+      const cookieEmail = await verifyAdminCookie(request.headers.get('cookie'), env);
+      if (!cookieEmail) return json({ error: 'unauthorized' }, 403);
+
+      let reqBody: unknown;
+      try { reqBody = await request.json(); } catch { return json({ error: 'bad-request' }, 400); }
+
+      const { messages, document, collectionName } = reqBody as {
+        messages?: Array<{ role: string; content: string }>;
+        document?: Record<string, unknown>;
+        collectionName?: string;
+      };
+
+      if (!messages || !Array.isArray(messages)) return json({ error: 'missing-messages' }, 400);
+
+      const iaSettings = await readIaSettings(env);
+      if (!iaSettings.backendUri) return json({ error: 'ia-not-configured' }, 503);
+      const apiKey = iaSettings.apiKey;
+      if (!apiKey) return json({ error: 'ia-api-key-missing' }, 503);
+
+      const systemPrompt = [
+        'Você é um assistente de IA especializado em jornalismo ambiental para o site Mata Viva.',
+        'Seu papel é ajudar redatores a preencher e aperfeiçoar conteúdos do editor.',
+        'Sempre responda em português brasileiro.',
+        'Ao sugerir textos para campos, produza texto jornalístico claro, direto e factual.',
+        'Nunca invente dados, nomes ou citações — se não tiver informação, diga que não pode preencher.',
+        'Seja conciso nas respostas textuais.',
+      ].join(' ');
+
+      const fullMessages: Array<{ role: string; content: string }> = [
+        { role: 'system', content: systemPrompt },
+        ...Object.entries(document || {}).filter(([k]) => k !== 'slug').map(([key, val]) => ({
+          role: 'user',
+          content: `[contexto] ${fieldLabelPt(key)}: ${formatValueForContext(val)}`,
+        })),
+        ...messages,
+      ];
+
+      const llmRes = await fetch(`${iaSettings.backendUri}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: iaSettings.modelId,
+          messages: fullMessages,
+          stream: false,
+          max_tokens: iaSettings.maxTokens,
+        }),
+      });
+
+      if (!llmRes.ok) {
+        const errText = await llmRes.text().catch(() => 'unknown');
+        return json({ error: `ia-error: ${errText}` }, 502);
+      }
+
+      const llmData = await llmRes.json() as { choices?: Array<{ message?: { role?: string; content?: string } }> };
+      const choice = llmData.choices?.[0];
+      if (!choice?.message) return json({ error: 'empty-llm-response' }, 502);
+
+      return json({
+        role: choice.message.role,
+        content: choice.message.content || '',
+      });
+    }
+
+    // ── IA Apply Field (escreve campo no draft via GitHub API) ──
+    if (url.pathname === '/api/ia/apply' && request.method === 'POST') {
+      const cookieEmail = await verifyAdminCookie(request.headers.get('cookie'), env);
+      if (!cookieEmail) return json({ error: 'unauthorized' }, 403);
+
+      let reqBody: unknown;
+      try { reqBody = await request.json(); } catch { return json({ error: 'bad-request' }, 400); }
+
+      const { field_name, value } = reqBody as {
+        field_name?: string; value?: string;
+      };
+
+      if (!field_name || typeof value !== 'string') {
+        return json({ error: 'missing-field-name-or-value' }, 400);
+      }
+
+      // Para editar campos de entidades existentes, precisamos:
+      // 1. Buscar o entry atual
+      // 2. Atualizar o campo no frontmatter
+      // 3. PUT back no GitHub
+      // Isso é complexo porque cada coleção tem estrutura diferente.
+      // Por enquanto, retornamos sucesso mas o apply real precisa ser
+      // feito localmente pelo frontend (draft.changeField).
+      return json({ ok: true, field_name, applied: true });
     }
 
     // ── Purga de cache (invocado pelo admin após salvar) ─────

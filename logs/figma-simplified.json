@@ -1,0 +1,16 @@
+{
+  "name": "Igarapé Água Branca",
+  "nodes": [
+    {
+      "id": "0:1",
+      "name": "Page 1",
+      "type": "CANVAS"
+    }
+  ],
+  "components": {},
+  "componentSets": {},
+  "globalVars": {
+    "styles": {}
+  },
+  "elements": {}
+}

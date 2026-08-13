@@ -5,6 +5,7 @@ import { entityMeta } from './entities';
 import { navigate } from './routing';
 import { usePermissions } from './permissions';
 import { NoticiaReadOnly } from './noticia-readonly';
+import { AiChatPanel } from './ai-chat-panel';
 import {
   TextField,
   SlugField,
@@ -341,6 +342,7 @@ export function EntryEditor({ collectionName, slug, isNew }) {
   const meta = entityMeta(collectionName);
   const Form = FORMS[collectionName] || GenericForm;
   const { canDelete } = usePermissions();
+  const [showAiChat, setShowAiChat] = useState(false);
 
   useEffect(() => {
     if (!collection) return;
@@ -352,6 +354,7 @@ export function EntryEditor({ collectionName, slug, isNew }) {
   }, [collection, isNew, entryApi.load, draft.createEmpty]);
 
   const handleSave = async () => {
+    setShowAiChat(false);
     setBusy(true);
     setNotice(null);
     await entryApi.persist();
@@ -364,7 +367,7 @@ export function EntryEditor({ collectionName, slug, isNew }) {
     } else {
       // Purga o cache do site (worker) para a edição aparecer já no próximo
       // request. O worker cacheia os fetches do raw (index.json + markdown)
-      // por até 5 min; sem isso, mudanças feitas aqui só apareciam depois.
+      // por até 5 min; sem isso, mudanças feitas aqui só aparecem depois.
       const saved = st?.draftEntry?.data || {};
       const paths = ['data/index.json'];
       if (saved.slug) paths.push(`content/${collection}/${String(saved.slug)}.md`);
@@ -374,6 +377,7 @@ export function EntryEditor({ collectionName, slug, isNew }) {
   };
 
   const handleCancel = () => {
+    setShowAiChat(false);
     draft.discard();
     navigate('collection', { collectionName });
   };
@@ -394,6 +398,14 @@ export function EntryEditor({ collectionName, slug, isNew }) {
           </p>
           <h1 className="pnl-title">{isNew ? `Nova ${meta.singular}` : `Editar ${meta.singular}`}</h1>
         </div>
+        <button
+          className={`pnl-ai-toggle-btn ${showAiChat ? 'pnl-ai-toggle-btn--active' : ''}`}
+          onClick={() => setShowAiChat(!showAiChat)}
+          title="Assistente IA"
+          aria-pressed={showAiChat}
+        >
+          ✦
+        </button>
       </header>
 
       <div className="pnl-editor-grid">
@@ -423,6 +435,15 @@ export function EntryEditor({ collectionName, slug, isNew }) {
           </Card>
         </aside>
       </div>
+
+      {showAiChat && (
+        <AiChatPanel
+          isOpen={showAiChat}
+          onClose={() => setShowAiChat(false)}
+          collectionName={collectionName}
+          formData={draft?.draftEntry?.data || {}}
+        />
+      )}
     </>
   );
 }

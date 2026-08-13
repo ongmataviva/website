@@ -1,6 +1,6 @@
 // Shared data contract — espelha as coleções de conteúdo do portal
-// (categoria, autor, pagina, noticia) para componentes e fixtures
-// continuarem tipados e consistentes com o schema do backend.
+// (categoria, autor, pagina, noticia, doacao, parceiro) para componentes
+// e fixtures continuarem tipados e consistentes com o schema do backend.
 
 export type Slug = string; // lowercase, kebab-case; also the markdown filename
 
@@ -38,6 +38,24 @@ export interface Noticia {
   imagem?: string; // media path, may be absolute /images/...
   resumo: string;
   corpoHtml: string; // markdown pre-rendered to HTML by the backend
+}
+
+export interface Doacao {
+  chave_pix: string;
+  titular: string;
+  banco: string;
+  agencia: string;
+  conta: string;
+  tipo_conta: string;
+  body?: string; // markdown extra text
+  corpoHtml?: string; // rendered HTML
+}
+
+export interface Parceiro {
+  slug: Slug;
+  title: string;
+  url?: string;
+  logo?: string;
 }
 
 // Small shared prop shapes

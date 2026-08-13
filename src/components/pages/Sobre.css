@@ -1,0 +1,142 @@
+/* Sobre — Página Sobre Nós customizada */
+
+/* ── Hero ─────────────────────────────────────────────────── */
+
+.mv-page-sobre__hero {
+  background: var(--color-surface);
+}
+
+.mv-page-sobre__hero-inner {
+  max-width: var(--max-width-page);
+  margin-inline: auto;
+  padding: var(--space-12) var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+.mv-page-sobre__hero-visual {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
+  border-radius: var(--radius-lg);
+  aspect-ratio: 4 / 3;
+  min-height: 320px;
+}
+
+.mv-page-sobre__hero-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.mv-page-sobre__hero-title {
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: var(--leading-display);
+  color: var(--color-ink);
+}
+
+.mv-page-sobre__hero-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-soft);
+}
+
+/* ── Missão / Visão / Valores ────────────────────────────── */
+
+.mv-page-sobre__mvv {
+  padding: var(--space-16) 0;
+}
+
+.mv-page-sobre__mvv-inner {
+  max-width: var(--max-width-page);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.mv-page-sobre__mvv-title {
+  margin: 0 0 var(--space-8);
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 700;
+  color: var(--color-ink);
+  text-align: center;
+}
+
+.mv-page-sobre__mvv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.mv-page-sobre__mvv-card {
+  background: var(--color-paper);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+
+.mv-page-sobre__mvv-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.mv-page-sobre__mvv-icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-4);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  /* green line-art icon placeholder via CSS shape */
+  position: relative;
+}
+
+.mv-page-sobre__mvv-card-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.mv-page-sobre__mvv-card-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-soft);
+}
+
+/* ── Responsivo ──────────────────────────────────────────── */
+
+@media (max-width: 48rem) {
+  .mv-page-sobre__hero-inner {
+    grid-template-columns: 1fr;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .mv-page-sobre__hero-visual {
+    min-height: 200px;
+    order: -1;
+  }
+
+  .mv-page-sobre__hero-title {
+    font-size: var(--text-h1);
+  }
+
+  .mv-page-sobre__mvv-grid {
+    grid-template-columns: 1fr;
+  }
+}

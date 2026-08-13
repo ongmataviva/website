@@ -87,3 +87,39 @@ collections:
       - { label: "Título", name: "titulo", widget: "string" }
       - { label: "Imagem", name: "imagem", widget: "image", required: false }
       - { label: "Corpo", name: "body", widget: "markdown" }
+
+  # ─── Doação (item único) ──────────────────────────────────────────────
+
+  - name: "doacao"
+    label: "Doação"
+    label_singular: "Doação"
+    description: "Dados bancários e chave PIX. Item único — edita apenas a entrada existente."
+    delete: false
+    create: false
+    folder: "content/doacao"
+    editor:
+      preview: false
+    fields:
+      - { label: "Chave PIX", name: "chave_pix", widget: "string" }
+      - { label: "Titular", name: "titular", widget: "string" }
+      - { label: "Banco", name: "banco", widget: "string" }
+      - { label: "Agência", name: "agencia", widget: "string" }
+      - { label: "Conta", name: "conta", widget: "string" }
+      - { label: "Tipo de conta", name: "tipo_conta", widget: "string" }
+      - { label: "Informações adicionais", name: "body", widget: "markdown", required: false, hint: "Texto extra exibido na seção de doação." }
+
+  # ─── Parceiros ───────────────────────────────────────────────────────
+
+  - name: "parceiro"
+    label: "Parceiros"
+    label_singular: "parceiro"
+    folder: "content/parceiro"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Nome", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "Ex.: instituto-abc. Vira o nome do arquivo." }
+      - { label: "URL", name: "url", widget: "string", required: false, hint: "Site do parceiro (opcional)." }
+      - { label: "Logo", name: "logo", widget: "image", required: false }

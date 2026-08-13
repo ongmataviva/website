@@ -1,12 +1,13 @@
 // ContentApp — router client das páginas de conteúdo (Opção C).
 // O build gera apenas o esqueleto; qualquer rota de conteúdo (/, /noticias,
-// /noticias/[slug], /categoria/[slug], /autor/[slug], /tag/[tag] e páginas
-// institucionais /[slug]) é servida pelo Worker com o mesmo shell e este
-// componente decide o que renderizar com base no pathname:
+// /noticias/[slug], /categoria/[slug], /autor/[slug], /tag/[tag], /doar,
+// /busca e páginas institucionais /[slug]) é servida pelo Worker com o mesmo
+// shell e este componente decide o que renderizar com base no pathname:
 //   - listagens: data/index.json via raw.githubusercontent
 //   - artigos/páginas: .md individual via raw.githubusercontent
+//   - doacao: singletons via raw.githubusercontent
 import { useEffect, useMemo, useState } from 'react';
-import type { Autor, Categoria, Noticia, Pagina } from '../types';
+import type { Autor, Categoria, Doacao, Noticia, Pagina, Parceiro } from '../types';
 import HeroSpotlight from '../news/HeroSpotlight';
 import NewsGrid from '../news/NewsGrid';
 import CategorySection from '../news/CategorySection';
@@ -15,8 +16,17 @@ import AuthorCard from '../news/AuthorCard';
 import ArticleHeader from '../news/ArticleHeader';
 import ArticleBody from '../news/ArticleBody';
 import PageShell from '../PageShell';
+import OQueFazemos from '../news/OQueFazemos';
+import MissaoVisaoValores from '../news/MissaoVisaoValores';
+import FraseDestaque from '../news/FraseDestaque';
+import DoacaoSection from '../news/DoacaoSection';
+import ParceirosGrid from '../news/ParceirosGrid';
+import { Sobre } from '../pages/Sobre';
+import { Projetos } from '../pages/Projetos';
 import {
   fetchIndex,
+  fetchDoacao,
+  fetchParceiros,
   fetchMarkdown,
   noticiaFromFrontmatter,
   paginaFromFrontmatter,
@@ -36,6 +46,7 @@ type Route =
   | { kind: 'autor'; slug: string }
   | { kind: 'tag'; tag: string }
   | { kind: 'pagina'; slug: string }
+  | { kind: 'custom'; page: 'sobre' | 'projetos' }
   | { kind: 'notFound' };
 
 function parseRoute(pathname: string): Route {
@@ -43,6 +54,9 @@ function parseRoute(pathname: string): Route {
   if (segs.length === 0) return { kind: 'home' };
   if (segs.length === 1) {
     if (segs[0] === 'noticias') return { kind: 'noticias' };
+    if (segs[0] === 'doar' || segs[0] === 'doacao') return { kind: 'pagina', slug: 'doar' };
+    if (segs[0] === 'sobre') return { kind: 'custom', page: 'sobre' };
+    if (segs[0] === 'projetos') return { kind: 'custom', page: 'projetos' };
     return { kind: 'pagina', slug: segs[0] };
   }
   if (segs.length === 2) {
@@ -195,6 +209,11 @@ function ContentView({ route, index }: { route: Route; index: SiteIndex }) {
         </>
       );
     }
+    case 'custom': {
+      if (route.page === 'sobre') return <Sobre />;
+      if (route.page === 'projetos') return <Projetos />;
+      return <NotFoundView />;
+    }
     case 'pagina':
       return <PageView slug={route.slug} />;
     case 'notFound':
@@ -213,6 +232,14 @@ function HomeView({
   categorias: Categoria[];
   categoriasPorSlug: Record<string, Categoria>;
 }) {
+  const [doacao, setDoacao] = useState<Doacao | null>(null);
+  const [parceiros, setParceiros] = useState<Parceiro[]>([]);
+
+  useEffect(() => {
+    fetchDoacao().then(setDoacao).catch(() => {});
+    fetchParceiros().then(setParceiros).catch(() => {});
+  }, []);
+
   const destaque =
     noticias.filter((n) => n.destaque).sort(ordemDataDesc)[0] ?? null;
   const recentes = noticias.filter((n) => n.slug !== destaque?.slug).slice(0, 12);
@@ -223,6 +250,9 @@ function HomeView({
         <HeroSpotlight noticia={destaque} categoriasPorSlug={categoriasPorSlug} />
       )}
 
+      <OQueFazemos />
+      <MissaoVisaoValores />
+
       <section className="mv-page-section">
         <h2 className="mv-page-section__title">Últimas notícias</h2>
         <NewsGrid
@@ -231,6 +261,8 @@ function HomeView({
           categoriasPorSlug={categoriasPorSlug}
         />
       </section>
+
+      <FraseDestaque />
 
       {categorias.map((categoria) => {
         const daCategoria = noticias.filter((n) => n.categoria === categoria.slug);
@@ -244,6 +276,8 @@ function HomeView({
         ) : null;
       })}
 
+      {parceiros.length > 0 && <ParceirosGrid parceiros={parceiros} />}
+      {doacao && <DoacaoSection doacao={doacao} />}
     </>
   );
 }

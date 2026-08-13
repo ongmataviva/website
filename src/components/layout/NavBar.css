@@ -1,11 +1,11 @@
-/* NavBar — navegação fixa no topo (só tokens Ocelot). */
+/* NavBar — Figma "Igarapé Água Branca" redesign */
 
 .mv-nav {
   position: sticky;
   top: 0;
   z-index: 40;
   background: var(--color-paper);
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid #cacaca;
 }
 
 .mv-nav__inner {
@@ -15,7 +15,7 @@
   padding-inline: var(--space-6);
   display: flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-6);
 }
 
 /* ── Wordmark ── */
@@ -25,11 +25,12 @@
   gap: var(--space-1);
   font-family: var(--font-display);
   font-size: var(--text-h2);
-  font-weight: 500;
+  font-weight: 700;
   line-height: var(--leading-display);
   color: var(--color-ink);
   text-decoration: none;
-  transition: all var(--dur-base) var(--ease-out);
+  white-space: nowrap;
+  transition: color var(--dur-base) var(--ease-out);
 }
 
 .mv-nav__brand:hover {
@@ -61,17 +62,19 @@
   padding-block: var(--space-2);
   font-family: var(--font-body);
   font-size: var(--text-body);
+  font-weight: 500;
   color: var(--color-ink-soft);
   text-decoration: none;
-  transition: all var(--dur-base) var(--ease-out);
+  white-space: nowrap;
+  transition: color var(--dur-base) var(--ease-out);
 }
 
 .mv-nav__link:hover {
-  color: var(--color-ink);
+  color: var(--color-accent);
 }
 
 .mv-nav__link--active {
-  color: var(--color-ink);
+  color: var(--color-accent);
 }
 
 .mv-nav__link--active::after {
@@ -88,6 +91,80 @@
 .mv-nav__link:focus-visible {
   outline: none;
   border-radius: var(--radius-sm);
+  box-shadow: var(--focus-ring);
+}
+
+/* ── Ações (buscar + cta + toggle) ── */
+.mv-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.mv-nav__search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.mv-nav__search:hover {
+  color: var(--color-accent);
+}
+
+.mv-nav__search:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.mv-nav__search-label {
+  display: inline;
+}
+
+.mv-nav__separator {
+  display: inline-block;
+  width: 1px;
+  height: 1.25rem;
+  background: #cccccc;
+}
+
+.mv-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-accent);
+  color: var(--color-accent-on);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.mv-nav__cta:hover {
+  background: var(--color-accent-hover);
+}
+
+.mv-nav__cta:active {
+  transform: scale(0.97);
+}
+
+.mv-nav__cta:focus-visible {
+  outline: none;
   box-shadow: var(--focus-ring);
 }
 
@@ -135,42 +212,7 @@
   transform: translateY(var(--space-1));
 }
 
-/* ── Ações (lupa + alternador) ── */
-.mv-nav__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.mv-nav__search {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--space-8);
-  height: var(--space-8);
-  padding: 0;
-  background: transparent;
-  border: 1px solid var(--color-line-strong);
-  border-radius: var(--radius-pill);
-  color: var(--color-ink);
-  text-decoration: none;
-  transition: all var(--dur-base) var(--ease-out);
-}
-
-.mv-nav__search:hover {
-  background: var(--color-surface);
-}
-
-.mv-nav__search:active {
-  transform: scale(0.96);
-}
-
-.mv-nav__search:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-/* ── Mobile (< ~48rem): painel empilhado ── */
+/* ── Mobile (< ~48rem) ── */
 @media (max-width: 48rem) {
   .mv-nav__inner {
     flex-wrap: wrap;
@@ -205,5 +247,9 @@
   .mv-nav__link {
     padding-block: var(--space-3);
     font-size: var(--text-lead);
+  }
+
+  .mv-nav__search-label {
+    display: none;
   }
 }

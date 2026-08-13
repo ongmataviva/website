@@ -5,7 +5,7 @@
 // notícia. As listagens usam data/index.json (gerado por GitHub Action no
 // push); artigos e páginas institucionais buscam o .md individual e
 // pré-renderizam o corpo com o mesmo mdToHtml usado no build.
-import type { Autor, Categoria, Noticia, Pagina } from '../components/types';
+import type { Autor, Categoria, Noticia, Pagina, Doacao, Parceiro } from '../components/types';
 import { mdToHtml } from './markdown';
 
 export const REPO = 'ongmataviva/website';
@@ -32,14 +32,69 @@ export async function fetchIndex(): Promise<SiteIndex> {
   return res.json();
 }
 
-/** Busca um documento markdown bruto (frontmatter + corpo) do repositório. */
-export async function fetchMarkdown(
-  collection: 'noticia' | 'pagina',
+/** Busca os dados da doação (singleton: content/doacao/). */
+export async function fetchDoacao(): Promise<Doacao | null> {
+  const paths = ['content/doacao/doacao.md', 'content/doacao/index.md'];
+  for (const p of paths) {
+    const res = await fetch(`${RAW_BASE}/${p}`, { cache: 'no-store' });
+    if (res.ok) {
+      const { data, body } = parseFrontmatter(await res.text());
+      return {
+        chave_pix: String(data.chave_pix || ''),
+        titular: String(data.titular || ''),
+        banco: String(data.banco || ''),
+        agencia: String(data.agencia || ''),
+        conta: String(data.conta || ''),
+        tipo_conta: String(data.tipo_conta || ''),
+        body: body || undefined,
+        corpoHtml: body ? mdToHtml(body) : undefined,
+      };
+    }
+  }
+  return null;
+}
+
+/** Busca a lista de parceiros (content/parceiro/). */
+export async function fetchParceiros(): Promise<Parceiro[]> {
+  // TODO: migrar para index.json quando o build-content-index.mjs for
+  // atualizado na branch content.
+  const out: Parceiro[] = [];
+  const slugsRes = await fetch(`${RAW_BASE}/content/parceiro/`, { cache: 'no-store' });
+  if (!slugsRes.ok) return out;
+  const html = await slugsRes.text();
+  const links = html.match(/href="([^"]+\.md)"/g) || [];
+  const slugs = links.map((l: string) => l.replace(/href="/, '').replace(/"/, '').replace('.md', ''));
+  for (const slug of slugs) {
+    try {
+      const { data } = await fetchMarkdownRaw('parceiro', slug);
+      out.push({
+        slug,
+        title: String(data.title || slug),
+        url: data.url ? String(data.url) : undefined,
+        logo: data.logo ? String(data.logo) : undefined,
+      });
+    } catch {
+      // skip bad files
+    }
+  }
+  return out;
+}
+
+async function fetchMarkdownRaw(
+  collection: string,
   slug: string,
 ): Promise<{ data: Record<string, unknown>; body: string }> {
   const res = await fetch(`${RAW_BASE}/content/${collection}/${slug}.md`, { cache: 'no-store' });
   if (!res.ok) throw new Error(`documento não encontrado (${res.status})`);
   return parseFrontmatter(await res.text());
+}
+
+/** Busca um documento markdown bruto de coleções conhecidas. */
+export async function fetchMarkdown(
+  collection: 'noticia' | 'pagina',
+  slug: string,
+): Promise<{ data: Record<string, unknown>; body: string }> {
+  return fetchMarkdownRaw(collection, slug);
 }
 
 // ─── Frontmatter (subset YAML usado no conteúdo do portal) ───────────

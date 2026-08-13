@@ -4,7 +4,7 @@
    como o Painel a apresenta (tela otimizada por entidade).
    ============================================================ */
 
-export const COLLECTION_ORDER = ['noticia', 'categoria', 'autor', 'pagina'];
+export const COLLECTION_ORDER = ['noticia', 'categoria', 'autor', 'pagina', 'doacao', 'parceiro'];
 
 export const ENTITIES = {
   noticia: {
@@ -30,6 +30,18 @@ export const ENTITIES = {
     singular: 'página',
     newLabel: 'Nova página',
     description: 'Páginas institucionais estáticas.',
+  },
+  doacao: {
+    label: 'Doação',
+    singular: 'doação',
+    newLabel: 'Editar dados de doação',
+    description: 'Chave PIX e dados bancários. Item único.',
+  },
+  parceiro: {
+    label: 'Parceiros',
+    singular: 'parceiro',
+    newLabel: 'Novo parceiro',
+    description: 'Logotipos e links de parceiros e apoiadores.',
   },
 };
 
@@ -62,6 +74,14 @@ export const FIELD_LABELS = {
   login: 'Login GitHub',
   bio: 'Biografia',
   avatar: 'Foto',
+  chave_pix: 'Chave PIX',
+  titular: 'Titular',
+  banco: 'Banco',
+  agencia: 'Agência',
+  conta: 'Conta',
+  tipo_conta: 'Tipo de conta',
+  url: 'URL do site',
+  logo: 'Logotipo',
 };
 
 export function fieldLabel(field) {

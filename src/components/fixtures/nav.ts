@@ -2,13 +2,17 @@
 import type { NavLink } from '../types';
 
 export const navLinks: NavLink[] = [
+  { label: 'Início', href: '/' },
+  { label: 'Sobre', href: '/sobre' },
+  { label: 'Causas', href: '/causas' },
   { label: 'Notícias', href: '/noticias' },
-  { label: 'Projetos', href: '/projetos' },
   { label: 'Contato', href: '/contato' },
 ];
 
 export const footerLinks: NavLink[] = [
+  { label: 'Início', href: '/' },
   { label: 'Sobre', href: '/sobre' },
-  { label: 'Projetos', href: '/projetos' },
+  { label: 'Causas', href: '/causas' },
+  { label: 'Notícias', href: '/noticias' },
   { label: 'Contato', href: '/contato' },
 ];

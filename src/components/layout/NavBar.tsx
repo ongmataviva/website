@@ -4,17 +4,22 @@ import './NavBar.css';
 
 export interface NavBarProps {
   links: NavLink[];
-  /** href do link ativo — recebe aria-current="page" e sublinhado de destaque. */
   activeHref?: string;
 }
 
 const MENU_ID = 'mv-nav-menu';
 
+const SEARCH_ICON = (
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+    <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+    <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 /**
- * Barra de navegação fixa no topo. Wordmark serif "Mata Viva" com ponto
- * de destaque no verde amazônico; lista horizontal no desktop e painel
- * empilhado sob um botão (aria-expanded/aria-controls) abaixo de ~48rem.
- * A lupa navega para /busca. Fecha o menu com Escape.
+ * NavBar redesenhada para o Figma "Igarapé Água Branca".
+ * Logo Mata Viva, links centrais, busca + "Buscar" texto, separador vertical,
+ * botão DOE AGORA (verde #528C40).
  */
 export function NavBar({ links, activeHref }: NavBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,6 +69,17 @@ export function NavBar({ links, activeHref }: NavBarProps) {
         </ul>
 
         <div className="mv-nav__actions">
+          <a href="/busca" className="mv-nav__search" aria-label="Buscar">
+            {SEARCH_ICON}
+            <span className="mv-nav__search-label">Buscar</span>
+          </a>
+
+          <span className="mv-nav__separator" aria-hidden="true" />
+
+          <a href="/doar" className="mv-nav__cta">
+            DOE AGORA
+          </a>
+
           <button
             ref={toggleRef}
             type="button"
@@ -77,39 +93,6 @@ export function NavBar({ links, activeHref }: NavBarProps) {
               {menuOpen ? 'Fechar' : 'Menu'}
             </span>
           </button>
-
-          <a
-            href="/busca"
-            className="mv-nav__search"
-            aria-label="Buscar"
-          >
-            <svg
-              className="mv-nav__search-icon"
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <circle
-                cx="11"
-                cy="11"
-                r="7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <line
-                x1="16.5"
-                y1="16.5"
-                x2="21"
-                y2="21"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </a>
         </div>
       </div>
     </nav>

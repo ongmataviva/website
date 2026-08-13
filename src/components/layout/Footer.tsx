@@ -9,34 +9,63 @@ const MISSION =
   'Vigilância ambiental e transparência na bacia do Igarapé Água Branca — APA Tarumã, Manaus/AM.';
 
 /**
- * Rodapé editorial: wordmark, missão em uma linha, lista de links e
- * linha de direitos. Borda superior de fio de cabelo, papel quente e
- * respiro generoso (--space-16).
+ * Footer redesenhado para o Figma — fundo verde escuro #4B6642,
+ * texto branco, informações de contato, PIX, redes sociais e links.
  */
 export function Footer({ links }: FooterProps) {
   return (
     <footer className="mv-footer">
       <div className="mv-footer__inner">
-        <div className="mv-footer__brand">
+        <div className="mv-footer__brand-col">
           <p className="mv-footer__name">
             Mata Viva
             <span className="mv-footer__dot" aria-hidden="true" />
           </p>
           <p className="mv-footer__mission">{MISSION}</p>
+          <div className="mv-footer__social">
+            <a
+              href="https://instagram.com/matavivaam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mv-footer__social-link"
+              aria-label="Instagram"
+            >
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+            </a>
+            <a
+              href="mailto:contato@mataviva.org"
+              className="mv-footer__social-link"
+              aria-label="E-mail"
+            >
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <nav className="mv-footer__nav" aria-label="Links do rodapé">
+        <nav className="mv-footer__nav-col" aria-label="Links do rodapé">
+          <h3 className="mv-footer__col-title">Portal</h3>
           <ul className="mv-footer__list">
             {links.map((link) => (
               <li key={link.href}>
-                <a className="mv-footer__link" href={link.href}>
-                  {link.label}
-                </a>
+                <a className="mv-footer__link" href={link.href}>{link.label}</a>
               </li>
             ))}
           </ul>
         </nav>
 
+        <div className="mv-footer__doacao-col">
+          <h3 className="mv-footer__col-title">Apoie</h3>
+          <p className="mv-footer__doacao-text">
+            Sua contribuição fortalece a vigilância ambiental do Igarapé Água Branca.
+          </p>
+          <a href="/doar" className="mv-footer__doacao-btn">FAÇA UMA DOAÇÃO</a>
+        </div>
+      </div>
+      <div className="mv-footer__bottom">
         <p className="mv-footer__copy">© 2026 Associação Mata Viva</p>
       </div>
     </footer>

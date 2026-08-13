@@ -1,37 +1,43 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "website",
-  "main": "worker/index.ts",
-  "compatibility_date": "2026-08-06",
-  "workers_dev": true, // TEMP: mataviva.<account>.workers.dev enquanto não há domínio custom
-  "preview_urls": true,
-
-  // Local dev: wrangler dev. Port 8786 é do Mata Viva (8787 é da
-  // Maritaka; 8788 = cms:server local).
-  "dev": {
-    "ip": "localhost",
-    "port": 8786
-  },
-
-  // Static assets served via the ASSETS binding (worker-first: o worker
-  // roda em todas as requests e o prerender das rotas de conteúdo injeta
-  // o HTML antes de responder; os demais caminhos caem no binding).
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page",
-    "run_worker_first": true
-  },
-
-  // Routes (optional — for custom domains add patterns here).
-  // Currently using mataviva.pages.dev default domain.
-  // "routes": [
-  //   { "pattern": "ongmataviva.com/*", "zone_name": "<your-zone-id>" }
-  // ],
-
-  // Non-sensitive configuration defaults (override with env vars / secrets).
-  // Sensitive values MUST be set via: wrangler secret put <name>
-  // or in the Cloudflare dashboard (Workers → mataviva → Variables).
-  "vars": {}
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "website",
+	"main": "worker/index.ts",
+	"compatibility_date": "2026-08-06",
+	"workers_dev": true, // TEMP: mataviva.<account>.workers.dev enquanto não há domínio custom
+	"preview_urls": true,
+	// Local dev: wrangler dev. Port 8786 é do Mata Viva (8787 é da
+	// Maritaka; 8788 = cms:server local).
+	"dev": {
+		"ip": "localhost",
+		"port": 8786
+	},
+	// Static assets served via the ASSETS binding (worker-first: o worker
+	// roda em todas as requests e o prerender das rotas de conteúdo injeta
+	// o HTML antes de responder; os demais caminhos caem no binding).
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page",
+		"run_worker_first": true
+	},
+	// Routes (optional — for custom domains add patterns here).
+	// Currently using mataviva.pages.dev default domain.
+	// "routes": [
+	//   { "pattern": "ongmataviva.com/*", "zone_name": "<your-zone-id>" }
+	// ],
+	// Non-sensitive configuration defaults (override with env vars / secrets).
+	// Sensitive values MUST be set via: wrangler secret put <name>
+	// or in the Cloudflare dashboard (Workers → mataviva → Variables).
+	"vars": {},
+	// KV para configurações administrativas (API keys, etc).
+	// Cria com: wrangler kv:namespace create "IA_SETTINGS"
+	// Depois usa o ID aqui: "kv_namespaces = [{ binding = "IA_SETTINGS", id = "...", preview_id = "..." }]"
+	"kv_namespaces": [
+		{
+			"binding": "IA_SETTINGS",
+			"id": "b997651469314a95ab274c6e8eb941ff",
+			"remote": true
+		}
+	]
 }

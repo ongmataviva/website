@@ -304,6 +304,7 @@ type Route =
   | { kind: 'categoria'; slug: string }
   | { kind: 'autor'; slug: string }
   | { kind: 'tag'; tag: string }
+  | { kind: 'custom'; page: 'sobre' | 'projetos' }
   | { kind: 'pagina'; slug: string }
   | { kind: 'notFound' };
 
@@ -312,6 +313,8 @@ function parseRoute(pathname: string): Route {
   if (segs.length === 0) return { kind: 'home' };
   if (segs.length === 1) {
     if (segs[0] === 'noticias') return { kind: 'noticias' };
+    if (segs[0] === 'sobre') return { kind: 'custom', page: 'sobre' };
+    if (segs[0] === 'projetos') return { kind: 'custom', page: 'projetos' };
     return { kind: 'pagina', slug: segs[0] };
   }
   if (segs.length === 2) {
@@ -534,6 +537,97 @@ function pageShellHTML(p: Pagina): string {
   );
 }
 
+function sobreHTML(): string {
+  return (
+    `<div class="mv-page-sobre">` +
+    `<section class="mv-page-sobre__hero">` +
+    `<div class="mv-page-sobre__hero-inner">` +
+    `<div class="mv-page-sobre__hero-visual" aria-hidden="true"></div>` +
+    `<div class="mv-page-sobre__hero-text">` +
+    `<span class="mv-page-sobre__hero-eyebrow">SOBRE NÓS</span>` +
+    `<h1 class="mv-page-sobre__hero-title">Conectando Comunidades<br>Pela Preservação Ambiental</h1>` +
+    `<p class="mv-page-sobre__hero-desc">Há mais de 22 anos, a Associação Mata Viva reúne moradores, ativistas e pesquisadores na proteção do Igarapé Água Branca, dentro da APA Tarumã, em Manaus/AM. Atuamos com mobilização comunitária, mutirões de limpeza, educação ambiental e monitoramento da qualidade da água — sempre com transparência e participação popular.</p>` +
+    `</div></div></section>` +
+    `<section class="mv-page-sobre__mvv">` +
+    `<div class="mv-page-sobre__mvv-inner">` +
+    `<h2 class="mv-page-sobre__mvv-title">Nossa essência</h2>` +
+    `<div class="mv-page-sobre__mvv-grid">` +
+    mvvCardHTML('Missão', 'Vigiar, preservar e recuperar o Igarapé Água Branca por meio de monitoramento científico, educação ambiental e incidência política.') +
+    mvvCardHTML('Visão', 'Ser referência em transparência ambiental e gestão participativa de bacias hidrográficas na Amazônia.') +
+    mvvCardHTML('Valores', 'Transparência, autonomia comunitária, ciência cidadã, justiça ambiental e defesa intransigente do direito à água.') +
+    `</div></div></section></div>`
+  );
+}
+
+function mvvCardHTML(titulo: string, desc: string): string {
+  return (
+    `<article class="mv-page-sobre__mvv-card">` +
+    `<div class="mv-page-sobre__mvv-icon" aria-hidden="true"></div>` +
+    `<h3 class="mv-page-sobre__mvv-card-title">${escapeHtml(titulo)}</h3>` +
+    `<p class="mv-page-sobre__mvv-card-desc">${escapeHtml(desc)}</p>` +
+    `</article>`
+  );
+}
+
+function projetosHTML(): string {
+  const metas = [
+    'Monitorar a qualidade da água em 5 pontos estratégicos do Igarapé',
+    'Publicar boletins mensais com dados abertos e acessíveis à comunidade',
+    'Ampliar a rede de voluntários para coleta e análise de amostras',
+  ];
+  const estrategias = [
+    'Mobilização de moradores para mutirões de limpeza nas margens',
+    'Oficinas de educação ambiental com escolas da região da APA Tarumã',
+    'Campanhas de preservação e conscientização nas redes sociais e na mídia local',
+  ];
+  const resultados = [
+    { n: '1', l: 'Núcleo de monitoramento formado' },
+    { n: '2', l: 'Boletins trimestrais publicados' },
+    { n: '3', l: 'Mutirões realizados na bacia' },
+    { n: '4', l: 'Oficinas com escolas' },
+    { n: '5', l: 'Pontos de coleta ativos' },
+    { n: '6', l: 'Anos de atuação ininterrupta' },
+  ];
+
+  return (
+    `<div class="mv-page-projetos">` +
+    `<section class="mv-page-projetos__hero">` +
+    `<div class="mv-page-projetos__hero-inner">` +
+    `<div class="mv-page-projetos__hero-visual" aria-hidden="true"></div>` +
+    `<div class="mv-page-projetos__hero-text">` +
+    `<span class="mv-page-projetos__hero-eyebrow">PROJETOS</span>` +
+    `<h1 class="mv-page-projetos__hero-title">Monitoramento online<br>de Igarapés Urbanos</h1>` +
+    `<p class="mv-page-projetos__hero-desc">O projeto de Monitoramento Online de Igarapés Urbanos une ciência cidadã e tecnologia para acompanhar em tempo real a qualidade da água do Igarapé Água Branca. Os dados são públicos e alimentam relatórios, boletins e ações de recuperação ambiental.</p>` +
+    `</div></div></section>` +
+    `<section class="mv-page-projetos__section">` +
+    `<div class="mv-page-projetos__section-inner mv-page-projetos__section--reverse">` +
+    `<div class="mv-page-projetos__section-visual" aria-hidden="true"></div>` +
+    `<div class="mv-page-projetos__section-text">` +
+    `<h2 class="mv-page-projetos__section-title">Metas do monitoramento</h2>` +
+    `<ul class="mv-page-projetos__checklist">` +
+    metas.map((item) => `<li class="mv-page-projetos__checklist-item"><span class="mv-page-projetos__check-icon" aria-hidden="true"></span><span>${escapeHtml(item)}</span></li>`).join('') +
+    `</ul></div></div></section>` +
+    `<section class="mv-page-projetos__section mv-page-projetos__section--alt">` +
+    `<div class="mv-page-projetos__section-inner">` +
+    `<div class="mv-page-projetos__section-visual" aria-hidden="true"></div>` +
+    `<div class="mv-page-projetos__section-text">` +
+    `<h2 class="mv-page-projetos__section-title">Estratégia de ação</h2>` +
+    `<ul class="mv-page-projetos__checklist">` +
+    estrategias.map((item) => `<li class="mv-page-projetos__checklist-item"><span class="mv-page-projetos__check-icon" aria-hidden="true"></span><span>${escapeHtml(item)}</span></li>`).join('') +
+    `</ul></div></div></section>` +
+    `<section class="mv-page-projetos__resultados">` +
+    `<div class="mv-page-projetos__resultados-inner">` +
+    `<h2 class="mv-page-projetos__resultados-title">Nossos Resultados</h2>` +
+    `<div class="mv-page-projetos__resultados-grid">` +
+    resultados.map((r) => (
+      `<div class="mv-page-projetos__resultado">` +
+      `<span class="mv-page-projetos__resultado-marker">${escapeHtml(r.n)}</span>` +
+      `<p class="mv-page-projetos__resultado-label">${escapeHtml(r.l)}</p></div>`
+    )).join('') +
+    `</div></div></section></div>`
+  );
+}
+
 function notFoundHTML(): string {
   return (
     `<section class="mv-page-section">` +
@@ -545,6 +639,55 @@ function notFoundHTML(): string {
 }
 
 // ─── Views por rota (espelham o ContentView do ContentApp) ───
+
+function oQueFazemosHTML(): string {
+  return (
+    `<section class="mv-oquefazemos">` +
+    `<div class="mv-oquefazemos__inner">` +
+    `<h2 class="mv-oquefazemos__title">O que fazemos?</h2>` +
+    `<div class="mv-oquefazemos__grid">` +
+    cardOQF('Plantio de Mudas Nativas', 'Promovemos o reflorestamento da mata ciliar do Igarapé Água Branca com espécies nativas da Amazônia, recuperando nascentes e protegendo a biodiversidade.') +
+    cardOQF('Projeto Trilha Ecológica', 'Educação ambiental na prática: trilhas monitoradas que conectam a comunidade ao ecossistema local, com identificação de fauna e flora.') +
+    cardOQF('Monitoramento Online', 'Dados abertos e transparência: análises da qualidade da água, imagens de satélite e boletins ambientais acessíveis a todos.') +
+    `</div></div></section>`
+  );
+}
+
+function cardOQF(titulo: string, desc: string): string {
+  return (
+    `<article class="mv-oquefazemos__card">` +
+    `<span class="mv-oquefazemos__icon" aria-hidden="true"></span>` +
+    `<h3 class="mv-oquefazemos__card-title">${escapeHtml(titulo)}</h3>` +
+    `<p class="mv-oquefazemos__card-desc">${escapeHtml(desc)}</p>` +
+    `</article>`
+  );
+}
+
+function missaoVisaoValoresHTML(): string {
+  const cards = [
+    { t: 'Missão', d: 'Vigiar, preservar e recuperar o Igarapé Água Branca por meio de monitoramento científico, educação ambiental e incidência política.' },
+    { t: 'Visão', d: 'Ser referência em transparência ambiental e gestão participativa de bacias hidrográficas na Amazônia.' },
+    { t: 'Valores', d: 'Transparência, autonomia comunitária, ciência cidadã, justiça ambiental e defesa intransigente do direito à água.' },
+  ];
+  const items = cards.map((c) =>
+    `<article class="mv-mvv__card">` +
+    `<h3 class="mv-mvv__card-title">${escapeHtml(c.t)}</h3>` +
+    `<p class="mv-mvv__card-desc">${escapeHtml(c.d)}</p>` +
+    `</article>`
+  ).join('');
+  return (
+    `<section class="mv-mvv"><div class="mv-mvv__inner"><div class="mv-mvv__grid">${items}</div></div></section>`
+  );
+}
+
+function fraseDestaqueHTML(): string {
+  return (
+    `<section class="mv-frase"><div class="mv-frase__inner">` +
+    `<blockquote class="mv-frase__quote"><p class="mv-frase__text">&ldquo;Lutamos diariamente pela preservação ambiental com transparência e participação comunitária.&rdquo;</p></blockquote>` +
+    `<p class="mv-frase__by">Mata Viva</p>` +
+    `</div></section>`
+  );
+}
 
 function homeViewHTML(index: SiteIndex): string {
   const noticias = sortedNoticias(index);
@@ -559,10 +702,13 @@ function homeViewHTML(index: SiteIndex): string {
     .join('');
   return (
     (destaque ? heroHTML(destaque, cats) : '') +
+    oQueFazemosHTML() +
+    missaoVisaoValoresHTML() +
     `<section class="mv-page-section">` +
     `<h2 class="mv-page-section__title">Últimas notícias</h2>` +
     newsGridHTML(recentes, cats, true) +
     `</section>` +
+    fraseDestaqueHTML() +
     sections
   );
 }
@@ -718,6 +864,12 @@ export async function prerenderContent(
       if (doc.notFound) return shellNotFound(shell);
       const pagina = paginaFromFrontmatter(route.slug, doc.data, doc.body);
       return shellWith(shell, `${pagina.titulo} — Mata Viva`, DEFAULT_DESCRIPTION, pageShellHTML(pagina));
+    }
+
+    case 'custom': {
+      if (route.page === 'sobre') return shellWith(shell, 'Sobre Nós — Mata Viva', DEFAULT_DESCRIPTION, sobreHTML());
+      if (route.page === 'projetos') return shellWith(shell, 'Projetos — Mata Viva', DEFAULT_DESCRIPTION, projetosHTML());
+      return shellNotFound(shell);
     }
 
     case 'notFound':

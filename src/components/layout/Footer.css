@@ -1,16 +1,16 @@
-/* Footer — rodapé editorial (só tokens Ocelot). */
+/* Footer — Figma "Igarapé Água Branca" redesign */
 
 .mv-footer {
-  background: var(--color-paper);
-  border-top: 1px solid var(--color-line);
+  background: #4b6642;
+  color: #ffffff;
 }
 
 .mv-footer__inner {
   max-width: var(--max-width-page);
   margin-inline: auto;
-  padding: var(--space-16) var(--space-6);
+  padding: var(--space-12) var(--space-6);
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-10);
 }
 
 .mv-footer__name {
@@ -20,9 +20,9 @@
   gap: var(--space-1);
   font-family: var(--font-display);
   font-size: var(--text-h2);
-  font-weight: 500;
+  font-weight: 700;
   line-height: var(--leading-display);
-  color: var(--color-ink);
+  color: #ffffff;
 }
 
 .mv-footer__dot {
@@ -30,22 +30,59 @@
   width: 0.4em;
   height: 0.4em;
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: #ffffff;
 }
 
 .mv-footer__mission {
-  max-width: 34rem;
-  margin: var(--space-4) 0 0;
+  max-width: 28rem;
+  margin: var(--space-3) 0 0;
   font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: var(--leading-normal);
-  color: var(--color-ink-soft);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mv-footer__social {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.mv-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.mv-footer__social-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mv-footer__social-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.mv-footer__col-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .mv-footer__list {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
+  flex-direction: column;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -54,38 +91,67 @@
 .mv-footer__link {
   font-family: var(--font-body);
   font-size: var(--text-body);
-  color: var(--color-ink-soft);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.25em;
-  transition: all var(--dur-base) var(--ease-out);
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color var(--dur-base) var(--ease-out);
 }
 
 .mv-footer__link:hover {
-  color: var(--color-ink);
-  text-decoration-color: var(--color-accent);
+  color: #ffffff;
 }
 
 .mv-footer__link:focus-visible {
-  outline: none;
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
   border-radius: var(--radius-sm);
-  box-shadow: var(--focus-ring);
+}
+
+.mv-footer__doacao-text {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mv-footer__doacao-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-6);
+  background: #ffffff;
+  color: #4b6642;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.mv-footer__doacao-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.mv-footer__doacao-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.mv-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: var(--space-6);
+  text-align: center;
 }
 
 .mv-footer__copy {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-caption);
-  color: var(--color-meta);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 @media (min-width: 48rem) {
   .mv-footer__inner {
-    grid-template-columns: minmax(0, 1fr) auto;
-    row-gap: var(--space-12);
-  }
-
-  .mv-footer__copy {
-    grid-column: 1 / -1;
+    grid-template-columns: 2fr 1fr 1fr;
   }
 }

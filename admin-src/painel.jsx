@@ -14,6 +14,7 @@ import { navigate, navigatePath, useRouterPath } from './routing';
 import { CollectionList } from './collection-list';
 import { EntryEditor, NoticiaEntryGate } from './editor';
 import { EditorSettings } from './editor-settings';
+import { IaConfigPage } from './ia-config';
 import { usePermissions } from './permissions';
 
 /* ============================================================
@@ -47,7 +48,7 @@ function startGoogleLogin({ config, setError }) {
 }
 
 function LoginScreen() {
-  const { login, isAuthenticating, authError } = useAuth();
+  const { login, isAuthenticating } = useAuth();
   const { config } = useConfig();
   const [error, setError] = useState(null);
 
@@ -70,7 +71,7 @@ function LoginScreen() {
         <p className="pnl-login-sub">
           Acesse com sua conta Google para gerenciar o conteúdo do site.
         </p>
-        {error || authError ? <p className="pnl-login-error">{String(error || authError)}</p> : null}
+        {error ? <p className="pnl-login-error">{String(error)}</p> : null}
         <Button variant="primary" size="lg" onClick={handleLogin} disabled={isAuthenticating}>
           {isAuthenticating ? 'Entrando…' : 'Entrar com Google'}
         </Button>
@@ -152,6 +153,16 @@ function Sidebar() {
           >
             <span>Equipe</span>
           </button>
+          <button
+            type="button"
+            className={path === '/configuracoes/ia' ? 'pnl-nav-item pnl-nav-item--active' : 'pnl-nav-item'}
+            onClick={() => {
+              navigatePath('/configuracoes/ia');
+              setOpen(false);
+            }}
+          >
+            <span>IA</span>
+          </button>
         </nav>
       ) : null}
 
@@ -199,6 +210,13 @@ function PainelRoutes() {
       return <Forbidden message="Somente administradores gerenciam a equipe." />;
     }
     return <EditorSettings />;
+  }
+
+  if (path === '/configuracoes/ia') {
+    if (!perms.isAdmin) {
+      return <Forbidden message="Somente administradores configuram o assistente IA." />;
+    }
+    return <IaConfigPage />;
   }
 
   if (!match) return null;
